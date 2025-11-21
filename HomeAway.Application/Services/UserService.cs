@@ -19,7 +19,7 @@ namespace HomeAway.Application.Services
 
         public async Task<bool> CreateUserAsync(UserDto userDto)
         {
-            var user = new Domain.Entities.User
+            var user = new Infrastructure.Identity.ApplicationUser
             {
                 FullName = userDto.FullName,
                 UserName = userDto.UserName,

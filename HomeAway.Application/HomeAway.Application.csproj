@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HomeAway.Domain\HomeAway.Domain.csproj" />
+    <ProjectReference Include="..\HomeAway.Infrastructure\HomeAway.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
