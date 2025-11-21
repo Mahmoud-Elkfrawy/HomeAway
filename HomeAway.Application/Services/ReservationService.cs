@@ -1,6 +1,7 @@
 ﻿using HomeAway.Application.DTOs;
 using HomeAway.Application.Interfaces;
 using HomeAway.Domain.Entities;
+using HomeAway.Domain.Interfaces;
 using HomeAway.Domain.Enums;
 using HomeAway.Domain.ValueObjects;
 using System;
