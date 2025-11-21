@@ -371,3 +371,17 @@ bin/
 
 HomeAway/bin
 HomeAway/obj
+
+bin/
+
+obj/
+
+.vs/
+
+.idea/
+
+HomeAway.API/appsettings.json
+
+user secrets
+appsettings.json
+./appsettings.json
