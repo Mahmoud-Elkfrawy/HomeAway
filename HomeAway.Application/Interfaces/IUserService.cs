@@ -9,7 +9,7 @@ namespace HomeAway.Application.Interfaces
 {
     public interface IUserService
     {
-        Task<UserDto> GetUserByIdAsync(int id);
+        Task<UserDto> GetUserByIdAsync(String id);
         Task<bool> CreateUserAsync(UserDto userDto);
     }
 }

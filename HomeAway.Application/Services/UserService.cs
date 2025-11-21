@@ -1,5 +1,7 @@
 ﻿using HomeAway.Application.DTOs;
 using HomeAway.Application.Interfaces;
+using HomeAway.Infrastructure.Identity;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +12,11 @@ namespace HomeAway.Application.Services
 {
     public class UserService : IUserService
     {
-        private readonly IUserRepository _userRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(UserManager<ApplicationUser> userManager)
         {
-            _userRepository = userRepository;
+            _userManager = userManager;
         }
 
         public async Task<bool> CreateUserAsync(UserDto userDto)
@@ -26,13 +28,14 @@ namespace HomeAway.Application.Services
                 Email = userDto.Email
             };
 
-            await _userRepository.AddAsync(user);
+            await _userManager.CreateAsync(user, userDto.Password);
             return true;
         }
 
-        public async Task<UserDto> GetUserByIdAsync(int id)
+        public async Task<UserDto> GetUserByIdAsync(String id)
         {
-            var user = await _userRepository.GetByIdAsync(id);
+            var user = await _userManager.FindByIdAsync(id);
+
             if (user == null) return null;
 
             return new UserDto

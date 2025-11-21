@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+
 
 namespace HomeAway.Application.Services
 {
@@ -41,19 +43,23 @@ namespace HomeAway.Application.Services
             return true;
         }
 
-        public async Task<List<ReservationDto>> GetUserReservationsAsync(int userId)
+        public async Task<List<ReservationDto>> GetUserReservationsAsync(string userId)
         {
             var reservations = await _reservationRepository.GetByUserIdAsync(userId);
+
+            var user = await _userManager.FindByIdAsync(userId);
+
             return reservations.Select(r => new ReservationDto
             {
                 Id = r.Id,
                 RoomNumber = r.Room.Number,
-                UserName = r.User.FullName,
+                UserName = user?.FullName,  // Get from Identity
                 From = r.DateRange.From,
                 To = r.DateRange.To,
                 Status = r.Status.ToString(),
                 TotalPrice = r.TotalPrice.Amount
             }).ToList();
         }
+
     }
 }
