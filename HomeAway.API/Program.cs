@@ -1,4 +1,8 @@
 
+using HomeAway.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
+using System;
+
 namespace HomeAway
 {
     public class Program
@@ -11,6 +15,9 @@ namespace HomeAway
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            builder.Services.AddDbContext<HomeAwayDbContext>(Options =>
+Options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
