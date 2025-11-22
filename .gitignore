@@ -380,8 +380,13 @@ obj/
 
 .idea/
 
-HomeAway.API/appsettings.json
-
+# HomeAway.API/appsettings.json
+HomeAway.Infrastructure/Migrations
 user secrets
 appsettings.json
 ./appsettings.json
+
+Migrations
+.Migrations
+./Migrations
+# /HomeAway.API/appsettings.json

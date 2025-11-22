@@ -16,7 +16,7 @@ namespace HomeAway.Infrastructure.Data
                 .Build();
 
             var optionsBuilder = new DbContextOptionsBuilder<HomeAwayDbContext>();
-            optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection2"));
 
             return new HomeAwayDbContext(optionsBuilder.Options);
         }
