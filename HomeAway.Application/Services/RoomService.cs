@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using HomeAway.Domain.Entities;
 using HomeAway.Domain.Enums;
+using HomeAway.Domain.Interfaces;
 
 
 namespace HomeAway.Application.Services

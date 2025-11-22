@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace HomeAway.Domain.Interfaces
 {
-    public interface IReservationRepository: IRepository<Reservation>
+    public interface IReservationRepository: IGenericRepository<Reservation>
     {
-        public Task<Reservation> GetByUserIdAsync(String userId);
+        public Task<Reservation[]> GetByUserIdAsync(String userId);
     }
 }

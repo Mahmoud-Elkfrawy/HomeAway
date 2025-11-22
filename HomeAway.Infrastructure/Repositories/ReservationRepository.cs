@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HomeAway.Infrastructure.Repositories
 {
-    internal class ReservationRepository
+    public class ReservationRepository
     {
     }
 }

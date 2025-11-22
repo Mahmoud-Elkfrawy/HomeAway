@@ -21,7 +21,8 @@ namespace HomeAway
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddDbContext<HomeAwayDbContext>(Options =>
-Options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+Options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+        b => b.MigrationsAssembly("HomeAway.Infrastructure")));
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<HomeAwayDbContext>();
@@ -50,7 +51,7 @@ Options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectio
         ValidateIssuerSigningKey = true
     };
 });
-
+            builder.Services.AddScoped<HomeAway.Infrastructure.Identity.JwtTokenService>();
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddEndpointsApiExplorer();

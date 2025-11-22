@@ -10,6 +10,6 @@ namespace HomeAway.Application.Interfaces
     public interface IReservationService
     {
         Task<bool> CreateReservationAsync(CreateReservationDto dto);
-        Task<List<ReservationDto>> GetUserReservationsAsync(int userId);
+        Task<List<ReservationDto>> GetUserReservationsAsync(String userId);
     }
 }

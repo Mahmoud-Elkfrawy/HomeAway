@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using HomeAway.Infrastructure.Identity;
 
 
 namespace HomeAway.Application.Services
@@ -18,11 +19,14 @@ namespace HomeAway.Application.Services
     {
         private readonly IReservationRepository _reservationRepository;
         private readonly IRoomRepository _roomRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ReservationService(IReservationRepository reservationRepository, IRoomRepository roomRepository)
+
+        public ReservationService(IReservationRepository reservationRepository, IRoomRepository roomRepository, UserManager<ApplicationUser> userManager)
         {
             _reservationRepository = reservationRepository;
             _roomRepository = roomRepository;
+            _userManager = userManager;
         }
 
         public async Task<bool> CreateReservationAsync(CreateReservationDto dto)
@@ -53,13 +57,14 @@ namespace HomeAway.Application.Services
             {
                 Id = r.Id,
                 RoomNumber = r.Room.Number,
-                UserName = user?.FullName,  // Get from Identity
+                UserName = user?.FullName,
                 From = r.DateRange.From,
                 To = r.DateRange.To,
                 Status = r.Status.ToString(),
                 TotalPrice = r.TotalPrice.Amount
             }).ToList();
         }
+
 
     }
 }
