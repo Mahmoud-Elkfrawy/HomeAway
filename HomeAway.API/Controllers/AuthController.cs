@@ -3,6 +3,7 @@ using HomeAway.Infrastructure.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace HomeAway.API.Controllers
 {
@@ -22,32 +23,47 @@ namespace HomeAway.API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDto dto)
         {
-            var user = new ApplicationUser
+            try
             {
-                UserName = dto.UserName,
-                Email = dto.Email,
-                FullName = dto.FullName
-            };
+                var user = new ApplicationUser
+                {
+                    UserName = dto.UserName,
+                    Email = dto.Email,
+                    FullName = dto.FullName
+                };
 
-            var result = await _userManager.CreateAsync(user, dto.Password);
+                var result = await _userManager.CreateAsync(user, dto.Password);
 
-            if (!result.Succeeded)
-                return BadRequest(result.Errors);
+                if (!result.Succeeded)
+                    return BadRequest(result.Errors);
 
-            return Ok("User Registered Successfully");
+                return Ok("User Registered Successfully");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Internal server error", error = ex.Message });
+            }
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto dto)
         {
-            var user = await _userManager.FindByNameAsync(dto.UserName);
+            
+            try
+            {
+                var user = await _userManager.FindByNameAsync(dto.UserName);
 
-            if (user == null || !await _userManager.CheckPasswordAsync(user, dto.Password))
-                return Unauthorized("Invalid username or password");
+                if (user == null || !await _userManager.CheckPasswordAsync(user, dto.Password))
+                    return Unauthorized("Invalid username or password");
 
-            var token = _jwtService.GenerateToken(user);
+                var token = _jwtService.GenerateToken(user);
 
-            return Ok(new { token });
+                return Ok(new { token });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Internal server error", error = ex.Message });
+            }
         }
     }
 }

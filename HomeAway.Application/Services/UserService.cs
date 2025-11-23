@@ -46,5 +46,16 @@ namespace HomeAway.Application.Services
                 Email = user.Email
             };
         }
+        public async Task AssignRoleAsync(string userId, string role)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user != null)
+            {
+                await _userManager.AddToRoleAsync(user, role);
+            }
+        }
+
     }
+
 }

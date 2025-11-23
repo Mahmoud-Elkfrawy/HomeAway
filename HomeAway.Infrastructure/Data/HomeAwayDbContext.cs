@@ -13,7 +13,7 @@ using HomeAway.Domain.ValueObjects;
 
 namespace HomeAway.Infrastructure.Data
 {
-    public class HomeAwayDbContext : IdentityDbContext<ApplicationUser>
+    public class HomeAwayDbContext : IdentityDbContext<ApplicationUser,IdentityRole, string>
     {
         public HomeAwayDbContext(DbContextOptions<HomeAwayDbContext> options)
             : base(options)

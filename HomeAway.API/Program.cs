@@ -8,7 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
 
-namespace HomeAway
+namespace HomeAway.API
 {
     public class Program
     {
@@ -25,36 +25,36 @@ Options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectio
         b => b.MigrationsAssembly("HomeAway.Infrastructure")));
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-    .AddEntityFrameworkStores<HomeAwayDbContext>();
+    .AddEntityFrameworkStores<HomeAwayDbContext>().AddDefaultTokenProviders();
+
             Console.WriteLine("DB => " + builder.Configuration.GetConnectionString("DefaultConnection2"));
 
-            builder.Services.Configure<JwtSettings>(
-    builder.Configuration.GetSection("JwtSettings"));
+
+
+            builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-.AddJwtBearer(options =>
-{
-    var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
-    var key = Encoding.UTF8.GetBytes(jwtSettings.Key);
+            }).AddJwtBearer(options =>
+                {
+                    var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
+                    var key = Encoding.UTF8.GetBytes(jwtSettings.Key);
 
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidIssuer = jwtSettings.Issuer,
-        ValidAudience = jwtSettings.Audience,
-        IssuerSigningKey = new SymmetricSecurityKey(key),
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true
-    };
-});
+                    options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidIssuer = jwtSettings.Issuer,
+                            ValidAudience = jwtSettings.Audience,
+                            IssuerSigningKey = new SymmetricSecurityKey(key),
+                            ValidateIssuer = true,
+                            ValidateAudience = true,
+                            ValidateLifetime = true,
+                            ValidateIssuerSigningKey = true
+                        };
+                    });
             builder.Services.AddScoped<HomeAway.Infrastructure.Identity.JwtTokenService>();
 
-            builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
