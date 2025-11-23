@@ -11,5 +11,9 @@ namespace HomeAway.Application.Interfaces
     {
         Task<bool> CreateReservationAsync(CreateReservationDto dto);
         Task<List<ReservationDto>> GetUserReservationsAsync(String userId);
+        Task<bool> IsRoomAvailableAsync(int roomId, DateTime from, DateTime to);
+        Task<ReservationDto?> BookRoomAsync(CreateReservationDto dto);
+        Task<ReservationDto?> GetByIdAsync(int id);
+        Task<List<ReservationDto>> GetByUserIdAsync(string userId);
     }
 }

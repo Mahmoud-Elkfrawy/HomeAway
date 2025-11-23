@@ -11,5 +11,8 @@ namespace HomeAway.Application.Interfaces
     {
         Task<UserDto> GetUserByIdAsync(String id);
         Task<bool> CreateUserAsync(UserDto userDto);
+        Task<bool> UpdateUserAsync(UserDto userDto);
+        Task<bool> DeleteUserAsync(String id);
+
     }
 }

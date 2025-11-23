@@ -36,12 +36,16 @@ namespace HomeAway.Infrastructure.Repositories
 
         public async Task<Room> GetByIdAsync(int id)
         {
-            return await _context.Rooms.Include(r => r.Hotel).FirstOrDefaultAsync(r => r.Id == id);
+            return await _context.Rooms
+                .Include(r => r.Hotel) //Optional
+                .FirstOrDefaultAsync(r => r.Id == id);
         }
 
         public async Task<Room> GetByNameAsync(string name)
         {
-            return await _context.Rooms.Include(r => r.Hotel).FirstOrDefaultAsync(r => r.Number == name);
+            return await _context.Rooms
+                .Include(r => r.Hotel)//Optional
+                .FirstOrDefaultAsync(r => r.Number == name);
         }
 
         public async Task UpdateAsync(Room entity)

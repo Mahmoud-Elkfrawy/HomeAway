@@ -21,29 +21,29 @@ namespace HomeAway.Application.Services
             _roomRepository = roomRepository;
         }
 
-        public async Task<bool> CreateRoomAsync(RoomDto roomDto)
+        public async Task<bool> CreateRoomAsync(CreateRoomDto roomDto)
         {
             var room = new Room
             {
-                Number = roomDto.Number,
-                Capacity = roomDto.Capacity,
-                Type = Enum.Parse<RoomType>(roomDto.Type),
-                IsAvailable = roomDto.IsAvailable
+                Quantity = roomDto.Quantity,
+                Type = roomDto.Type,
+                //IsAvailable = roomDto.IsAvailable,
+                HotelId = _roomRepository.GetByNameAsync(roomDto.HotelName).Result.Id
             };
 
             await _roomRepository.AddAsync(room);
             return true;
         }
 
-        public async Task<List<RoomDto>> GetAllRoomsAsync()
+        public async Task<List<RoomDto>> GetAllAsync()
         {
             var rooms = await _roomRepository.GetAllAsync();
             return rooms.Select(r => new RoomDto
             {
                 Id = r.Id,
-                Number = r.Number,
+                //Number = r.Number,
                 Type = r.Type.ToString(),
-                Capacity = r.Capacity,
+                Quantity = r.Quantity,
                 IsAvailable = r.IsAvailable,
                 HotelName = r.Hotel.Name
             }).ToList();
@@ -57,9 +57,9 @@ namespace HomeAway.Application.Services
             return new RoomDto
             {
                 Id = room.Id,
-                Number = room.Number,
+                //Number = room.Number,
                 Type = room.Type.ToString(),
-                Capacity = room.Capacity,
+                Quantity = room.Quantity,
                 IsAvailable = room.IsAvailable,
                 HotelName = room.Hotel.Name
             };

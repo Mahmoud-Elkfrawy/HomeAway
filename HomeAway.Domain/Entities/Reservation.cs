@@ -16,7 +16,7 @@ namespace HomeAway.Domain.Entities
         public int RoomId { get; set; }
         public Room Room { get; set; }
 
-        public String UserId { get; set; }
+        public String? UserId { get; set; }
 
         public DateRange DateRange { get; set; }
         public Money TotalPrice { get; set; }

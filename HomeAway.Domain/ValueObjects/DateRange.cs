@@ -20,6 +20,6 @@ namespace HomeAway.Domain.ValueObjects
             To = to;
         }
 
-        //public int TotalNights => (To - From).Days;
+        public int Nights => (int)(To.Date - From.Date).TotalDays;   // if it cause any problem -> Comment it
     }
 }

@@ -10,7 +10,8 @@ namespace HomeAway.Domain.Enums
     {
         Single,
         Double,
-        Suite,
-        Deluxe
+        Triple,
+        Quadruple,
+        Penthouse
     }
 }

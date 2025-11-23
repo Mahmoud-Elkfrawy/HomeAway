@@ -7,12 +7,15 @@ using System.Threading.Tasks;
 
 namespace HomeAway.Application.DTOs
 {
-    public class RoomDto
+    public class CreateRoomDto
     {
-        public int Id { get; set; }
-        public string HotelName { get; set; }
+        public string Number { get; set; }
+        public decimal Price { get; set; }
+        public RoomType Type { get; set; }
+
         public int Quantity { get; set; }
-        public String Type { get; set; }
-        public bool IsAvailable { get; set; }
+
+        public String HotelName { get; set; }
     }
+
 }
