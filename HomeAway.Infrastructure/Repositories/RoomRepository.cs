@@ -1,12 +1,53 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using HomeAway.Domain.Entities;
+using HomeAway.Application.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using HomeAway.Domain.Interfaces;
+using HomeAway.Infrastructure.Data;
 
 namespace HomeAway.Infrastructure.Repositories
 {
-    internal class RoomRepository
+    public class RoomRepository : IRoomRepository
     {
+        private readonly HomeAwayDbContext _context;
+
+        public RoomRepository(HomeAwayDbContext context)
+        {
+            _context = context;
+        }
+
+        public async Task AddAsync(Room entity)
+        {
+            await _context.Rooms.AddAsync(entity);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(Room entity)
+        {
+            _context.Rooms.Remove(entity);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<Room>> GetAllAsync()
+        {
+            return await _context.Rooms
+                .Include(r => r.Hotel)          // if you have Hotel navigation
+                .ToListAsync();
+        }
+
+        public async Task<Room> GetByIdAsync(int id)
+        {
+            return await _context.Rooms.Include(r => r.Hotel).FirstOrDefaultAsync(r => r.Id == id);
+        }
+
+        public async Task<Room> GetByNameAsync(string name)
+        {
+            return await _context.Rooms.Include(r => r.Hotel).FirstOrDefaultAsync(r => r.Number == name);
+        }
+
+        public async Task UpdateAsync(Room entity)
+        {
+            _context.Rooms.Update(entity);
+            await _context.SaveChangesAsync();
+        }
     }
 }

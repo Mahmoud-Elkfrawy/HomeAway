@@ -9,6 +9,7 @@ namespace HomeAway.Application.Interfaces
     public interface IGenericRepository<T> where T : class
     {
         Task<T> GetByIdAsync(int id);
+        Task<T> GetByNameAsync(String Name);
         Task<List<T>> GetAllAsync();
         Task AddAsync(T entity);
         Task UpdateAsync(T entity);
