@@ -53,11 +53,24 @@ namespace HomeAway.Infrastructure.Data
                 {
                     money.Property(m => m.Amount)
                          .HasColumnName("TotalPrice")
-                         .HasPrecision(18, 2); // fix decimal warning
+                         .HasPrecision(18, 2);
+
                     money.Property(m => m.Currency)
                          .HasColumnName("Currency");
                 });
             });
+
+            modelBuilder.Entity<Room>()
+        .OwnsOne(r => r.Price, money =>
+        {
+            money.Property(m => m.Amount)
+                 .HasColumnName("Price")
+                 .HasPrecision(18, 2);
+
+            money.Property(m => m.Currency)
+                 .HasColumnName("PriceCurrency")
+                 .HasMaxLength(3);
+        });
         }
 
     }

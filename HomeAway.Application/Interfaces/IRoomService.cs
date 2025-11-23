@@ -1,4 +1,5 @@
 ﻿using HomeAway.Application.DTOs;
+using HomeAway.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,12 @@ namespace HomeAway.Application.Interfaces
 {
     public interface IRoomService
     {
-        Task<List<RoomDto>> GetAllAsync();
-        Task<RoomDto> GetRoomByIdAsync(int id);
         Task<bool> CreateRoomAsync(CreateRoomDto roomDto);
+
+        Task<List<RoomDto>> GetAllAsync();
+
+        Task<RoomDto> GetRoomByIdAsync(int id);
+        Task<RoomDto> UpdateAsync(RoomDto roomDto);
+        Task<bool> DeleteAsync(int Id);
     }
 }

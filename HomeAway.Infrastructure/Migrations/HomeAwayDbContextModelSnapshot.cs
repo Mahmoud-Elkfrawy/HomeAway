@@ -58,7 +58,6 @@ namespace HomeAway.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -76,18 +75,17 @@ namespace HomeAway.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Capacity")
-                        .HasColumnType("int");
-
-                    b.Property<int>("HotelId")
+                    b.Property<int?>("HotelId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsAvailable")
                         .HasColumnType("bit");
 
                     b.Property<string>("Number")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
 
                     b.Property<int>("Type")
                         .HasColumnType("int");
@@ -309,27 +307,6 @@ namespace HomeAway.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("HomeAway.Domain.ValueObjects.DateRange", "DateRange", b1 =>
-                        {
-                            b1.Property<int>("ReservationId")
-                                .HasColumnType("int");
-
-                            b1.Property<DateTime>("From")
-                                .HasColumnType("datetime2")
-                                .HasColumnName("From");
-
-                            b1.Property<DateTime>("To")
-                                .HasColumnType("datetime2")
-                                .HasColumnName("To");
-
-                            b1.HasKey("ReservationId");
-
-                            b1.ToTable("Reservations");
-
-                            b1.WithOwner()
-                                .HasForeignKey("ReservationId");
-                        });
-
                     b.OwnsOne("HomeAway.Domain.ValueObjects.Money", "TotalPrice", b1 =>
                         {
                             b1.Property<int>("ReservationId")
@@ -353,6 +330,27 @@ namespace HomeAway.Infrastructure.Migrations
                                 .HasForeignKey("ReservationId");
                         });
 
+                    b.OwnsOne("HomeAway.Domain.ValueObjects.DateRange", "DateRange", b1 =>
+                        {
+                            b1.Property<int>("ReservationId")
+                                .HasColumnType("int");
+
+                            b1.Property<DateTime>("From")
+                                .HasColumnType("datetime2")
+                                .HasColumnName("From");
+
+                            b1.Property<DateTime>("To")
+                                .HasColumnType("datetime2")
+                                .HasColumnName("To");
+
+                            b1.HasKey("ReservationId");
+
+                            b1.ToTable("Reservations");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ReservationId");
+                        });
+
                     b.Navigation("DateRange")
                         .IsRequired();
 
@@ -366,11 +364,36 @@ namespace HomeAway.Infrastructure.Migrations
                 {
                     b.HasOne("HomeAway.Domain.Entities.Hotel", "Hotel")
                         .WithMany("Rooms")
-                        .HasForeignKey("HotelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("HotelId");
+
+                    b.OwnsOne("HomeAway.Domain.ValueObjects.Money", "Price", b1 =>
+                        {
+                            b1.Property<int>("RoomId")
+                                .HasColumnType("int");
+
+                            b1.Property<decimal>("Amount")
+                                .HasPrecision(18, 2)
+                                .HasColumnType("decimal(18,2)")
+                                .HasColumnName("Price");
+
+                            b1.Property<string>("Currency")
+                                .IsRequired()
+                                .HasMaxLength(3)
+                                .HasColumnType("nvarchar(3)")
+                                .HasColumnName("PriceCurrency");
+
+                            b1.HasKey("RoomId");
+
+                            b1.ToTable("Rooms");
+
+                            b1.WithOwner()
+                                .HasForeignKey("RoomId");
+                        });
 
                     b.Navigation("Hotel");
+
+                    b.Navigation("Price")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

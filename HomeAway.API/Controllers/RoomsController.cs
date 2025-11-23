@@ -1,7 +1,9 @@
 ﻿using HomeAway.Application.DTOs;
 using HomeAway.Application.Interfaces;
+using HomeAway.Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HomeAway.API.Controllers
@@ -20,47 +22,89 @@ namespace HomeAway.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var rooms = await _roomService.GetAllAsync();
-            return Ok(rooms);
+            try
+            {
+                var rooms = await _roomService.GetAllAsync();
+                return Ok(rooms);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Internal server error", error = ex.Message });
+            }
+
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var room = await _roomService.GetRoomByIdAsync(id);
-            return room == null ? NotFound() : Ok(room);
+            try
+            {
+                var room = await _roomService.GetRoomByIdAsync(id);
+                return room == null ? NotFound() : Ok(room);
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Internal server error", error = ex.Message });
+            }
         }
 
         //[Authorize(Roles = "Admin,Provider")]
         [HttpPost]
         public async Task<IActionResult> Create(CreateRoomDto dto)
         {
-            var roomId = await _roomService.CreateRoomAsync(dto);
-            return CreatedAtAction(nameof(GetById), new { id = roomId }, null);
+            try
+            {
+                var roomId = await _roomService.CreateRoomAsync(dto);
+                return CreatedAtAction(nameof(GetById), new { id = roomId }, null);
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Internal server error", error = ex.Message });
+            }
         }
 
         //[Authorize(Roles = "Admin,Provider")]
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, UpdateRoomDto dto)
+        [HttpPut]
+        public async Task<IActionResult> Update(RoomDto dto)
         {
-            var updated = await _roomService.UpdateAsync(id, dto);
+            try
+            {
+                var updated = await _roomService.UpdateAsync(dto);
 
-            if (!updated)
-                return NotFound();
+                if (updated == null)
+                    return NotFound();
 
-            return NoContent();
+                return NoContent();
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Internal server error", error = ex.Message });
+            }
+
         }
 
         //[Authorize(Roles = "Admin,Provider")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var deleted = await _roomService.DeleteAsync(id);
+            try
+            {
+                bool deleted = await _roomService.DeleteAsync(id);
 
-            if (!deleted)
-                return NotFound();
+                if (!deleted)
+                    return NotFound();
 
-            return NoContent();
+                return NoContent();
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Internal server error", error = ex.Message });
+            }
+
         }
     }
 }

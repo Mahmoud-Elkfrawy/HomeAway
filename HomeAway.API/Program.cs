@@ -1,6 +1,10 @@
 
+using HomeAway.Application.Interfaces;
+using HomeAway.Application.Services;
+using HomeAway.Domain.Interfaces;
 using HomeAway.Infrastructure.Data;
 using HomeAway.Infrastructure.Identity;
+using HomeAway.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -54,6 +58,13 @@ Options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectio
                         };
                     });
             builder.Services.AddScoped<HomeAway.Infrastructure.Identity.JwtTokenService>();
+            builder.Services.AddScoped<IRoomService, RoomService>();
+            //builder.Services.AddScoped<IHotelService, HotelService>();
+            builder.Services.AddScoped<IRoomRepository, RoomRepository>();
+            //builder.Services.AddScoped<IHotelRepository, HotelRepository>();
+
+
+
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();

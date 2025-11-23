@@ -15,7 +15,7 @@ namespace HomeAway.Application.DTOs
 
         public int Quantity { get; set; }
 
-        public String HotelName { get; set; }
+        public String? HotelName { get; set; }
     }
 
 }

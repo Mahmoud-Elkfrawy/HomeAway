@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using HomeAway.Domain.Entities;
 using HomeAway.Domain.Enums;
 using HomeAway.Domain.Interfaces;
+using HomeAway.Domain.ValueObjects;
 
 
 namespace HomeAway.Application.Services
@@ -27,8 +28,9 @@ namespace HomeAway.Application.Services
             {
                 Quantity = roomDto.Quantity,
                 Type = roomDto.Type,
+                Price = new Money(roomDto.Price, "USD"),
                 //IsAvailable = roomDto.IsAvailable,
-                HotelId = _roomRepository.GetByNameAsync(roomDto.HotelName).Result.Id
+                //HotelId = _roomRepository.GetByNameAsync(roomDto.HotelName).Result.Id
             };
 
             await _roomRepository.AddAsync(room);
@@ -64,5 +66,31 @@ namespace HomeAway.Application.Services
                 HotelName = room.Hotel.Name
             };
         }
+        public async Task<RoomDto> UpdateAsync(RoomDto roomDto)
+        {
+            var room = await _roomRepository.GetByIdAsync(roomDto.Id);
+
+            if (room != null)
+            {
+                room.Quantity = roomDto.Quantity;
+                //room.Type = roomDto.Type;
+                //room.IsAvailable = roomDto.IsAvailable;
+                await _roomRepository.UpdateAsync(room);
+                return roomDto;
+            }
+            return null;
+        }
+        public async Task<bool> DeleteAsync(int Id)
+        {
+            var room = await _roomRepository.GetByIdAsync(Id);
+
+            if (room != null)
+            {
+                await _roomRepository.DeleteAsync(room);
+                return true;
+            }
+            return false;
+        }
+
     }
 }
