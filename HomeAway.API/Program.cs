@@ -59,9 +59,9 @@ Options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectio
                     });
             builder.Services.AddScoped<HomeAway.Infrastructure.Identity.JwtTokenService>();
             builder.Services.AddScoped<IRoomService, RoomService>();
-            //builder.Services.AddScoped<IHotelService, HotelService>();
+            builder.Services.AddScoped<IHotelService, HotelService>();
             builder.Services.AddScoped<IRoomRepository, RoomRepository>();
-            //builder.Services.AddScoped<IHotelRepository, HotelRepository>();
+            builder.Services.AddScoped<IHotelRepository, HotelRepository>();
 
 
 

@@ -1,4 +1,6 @@
-﻿using HomeAway.Domain.Enums;
+﻿using HomeAway.Domain.Entities;
+using HomeAway.Domain.Enums;
+using HomeAway.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +16,9 @@ namespace HomeAway.Application.DTOs
         public int Quantity { get; set; }
         public String Type { get; set; }
         public bool IsAvailable { get; set; }
+        public int? HotelId { get; set; }
+
+        public string? Number { get; set; }
+        public Money Price { get; set; }
     }
 }
