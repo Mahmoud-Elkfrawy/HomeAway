@@ -20,6 +20,5 @@ namespace HomeAway.Domain.Entities
         public Money Price { get; set; }
 
         public bool IsAvailable { get; set; }
-
     }
 }

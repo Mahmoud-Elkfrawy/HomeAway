@@ -10,5 +10,6 @@ namespace HomeAway.Domain.Interfaces
 {
     public interface IRoomRepository:IGenericRepository<Room>
     {
+
     }
 }
