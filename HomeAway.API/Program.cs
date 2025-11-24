@@ -60,9 +60,11 @@ namespace HomeAway.API
             builder.Services.AddScoped<HomeAway.Infrastructure.Identity.JwtTokenService>();
             builder.Services.AddScoped<IRoomService, RoomService>();
             builder.Services.AddScoped<IHotelService, HotelService>();
+            builder.Services.AddScoped<IReservationService, ReservationService>();
+
             builder.Services.AddScoped<IRoomRepository, RoomRepository>();
             builder.Services.AddScoped<IHotelRepository, HotelRepository>();
-
+            builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
 
 
 

@@ -16,6 +16,5 @@ namespace HomeAway.Application.DTOs
         public string PhoneNumber { get; set; } = string.Empty;
         public string[]? images { get; set; } = Array.Empty<string>();
         public int Rating { get; set; }
-
     }
 }

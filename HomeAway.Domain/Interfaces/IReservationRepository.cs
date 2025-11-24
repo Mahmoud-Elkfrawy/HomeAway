@@ -13,5 +13,10 @@ namespace HomeAway.Domain.Interfaces
         public Task<List<Reservation>> GetByUserIdAsync(String userId);
         Task<List<Reservation>> GetByRoomIdAsync(int roomId);
         Task<bool> AnyOverlappingAsync(int roomId, DateTime from, DateTime to);
+        Task<List<Reservation>> GetAllAsync();
+        Task<Reservation> GetByIdAsync(int id);
+        Task AddAsync(Reservation reservation);
+        Task UpdateAsync(Reservation reservation);
+        Task DeleteAsync(Reservation reservation);
     }
 }

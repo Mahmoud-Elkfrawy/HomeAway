@@ -26,7 +26,9 @@ namespace HomeAway.Infrastructure.Repositories
 
         public async Task<Hotel> GetByIdAsync(int id)
         {
-            return await _context.Hotels.FindAsync(id);
+            return await _context.Hotels
+                .Include(h => h.Rooms) // optional
+                .FirstOrDefaultAsync(h => h.Id == id);
         }
 
         public async Task AddAsync(Hotel hotel)
@@ -52,5 +54,10 @@ namespace HomeAway.Infrastructure.Repositories
             return await _context.Hotels.FirstOrDefaultAsync(r => r.Name == Name);
 
         }
+
+        //public async Task<bool> ExistsAsync(int id)
+        //{
+        //    return await _context.Hotels.AnyAsync(h => h.Id == id);
+        //}
     }
 }
