@@ -31,7 +31,7 @@ namespace HomeAway.API.Controllers
             return hotel == null ? NotFound() : Ok(hotel);
         }
 
-        [Authorize]
+        //[Authorize(Roles = "Provider")]
         [HttpPost]
         public async Task<IActionResult> Create(CreateHotelDto dto)
         {
@@ -39,7 +39,7 @@ namespace HomeAway.API.Controllers
             return CreatedAtAction(nameof(GetById), new { id = hotelId }, null);
         }
 
-        [Authorize]
+        //[Authorize(Roles = "Provider")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, UpdateHotelDto dto)
         {
@@ -50,7 +50,7 @@ namespace HomeAway.API.Controllers
             return NoContent();
         }
 
-        [Authorize]
+        //[Authorize(Roles = "Provider")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
