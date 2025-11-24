@@ -25,11 +25,11 @@ namespace HomeAway.API
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddDbContext<HomeAwayDbContext>(Options =>
-Options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection2"),
-        b => b.MigrationsAssembly("HomeAway.Infrastructure")));
+                Options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection2"),
+                        b => b.MigrationsAssembly("HomeAway.Infrastructure")));
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-    .AddEntityFrameworkStores<HomeAwayDbContext>().AddDefaultTokenProviders();
+                .AddEntityFrameworkStores<HomeAwayDbContext>().AddDefaultTokenProviders();
 
             Console.WriteLine("DB => " + builder.Configuration.GetConnectionString("DefaultConnection2"));
 

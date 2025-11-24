@@ -12,12 +12,11 @@ namespace HomeAway.Application.Interfaces
     {
         Task<List<HotelDto>> GetAllAsync();
 
-        Task<HotelDto> GetHotelByIdAsync(int id);
         Task<HotelDto> GetByIdAsync(int id);
 
-        Task<int> CreateAsync(CreateHotelDto dto);
+        Task<int> CreateAsync(HotelDto dto);
 
-        Task<bool> UpdateAsync(int id, UpdateHotelDto dto);
+        Task<bool> UpdateAsync(HotelDto dto);
 
         Task<bool> DeleteAsync(int id);
     }

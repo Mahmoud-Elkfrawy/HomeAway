@@ -33,17 +33,17 @@ namespace HomeAway.API.Controllers
 
         //[Authorize(Roles = "Provider")]
         [HttpPost]
-        public async Task<IActionResult> Create(CreateHotelDto dto)
+        public async Task<IActionResult> Create(HotelDto dto)
         {
             var hotelId = await _hotelService.CreateAsync(dto);
             return CreatedAtAction(nameof(GetById), new { id = hotelId }, null);
         }
 
         //[Authorize(Roles = "Provider")]
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, UpdateHotelDto dto)
+        [HttpPut]
+        public async Task<IActionResult> Update(HotelDto dto)
         {
-            var updated = await _hotelService.UpdateAsync(id, dto);
+            var updated = await _hotelService.UpdateAsync(dto);
             if (!updated)
                 return NotFound();
 

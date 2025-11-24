@@ -29,18 +29,6 @@ namespace HomeAway.Application.Services
             }).ToList();
         }
 
-        public async Task<HotelDto> GetHotelByIdAsync(int id)
-        {
-            var hotel = await _hotelRepository.GetByIdAsync(id);
-            if (hotel == null) return null;
-
-            return new HotelDto
-            {
-                Id = hotel.Id,
-                Name = hotel.Name,
-                Address = hotel.Address
-            };
-        }
         public async Task<HotelDto> GetByIdAsync(int id)
         {
             var h = await _hotelRepository.GetByIdAsync(id);
@@ -54,7 +42,7 @@ namespace HomeAway.Application.Services
             };
         }
 
-        public async Task<int> CreateAsync(CreateHotelDto dto)
+        public async Task<int> CreateAsync(HotelDto dto)
         {
             var hotel = new Hotel
             {
@@ -71,17 +59,20 @@ namespace HomeAway.Application.Services
             return hotel.Id;
         }
 
-        public async Task<bool> UpdateAsync(int id,UpdateHotelDto dto)
+        public async Task<bool> UpdateAsync(HotelDto dto)
         {
-            //var hotel = await _hotelRepository.GetByIdAsync(id);
-            //if (hotel == null) return false;
+            var hotel = await _hotelRepository.GetByIdAsync(dto.Id);
+            if (hotel == null) return false;
 
-            //hotel.Name = dto.Name;
-            //hotel.Address = dto.Address;
+            hotel.Name = dto.Name;
+            hotel.Address = dto.Address;
+            hotel.Description = dto.Description;
+            hotel.Email = dto.Email;
+            hotel.PhoneNumber = dto.PhoneNumber;
+            hotel.images = dto.images;
 
-            //await _hotelRepository.UpdateAsync(hotel);
-            //return true;
-            return false;
+            await _hotelRepository.UpdateAsync(hotel);
+            return true;
         }
 
         public async Task<bool> DeleteAsync(int id)
