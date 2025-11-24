@@ -36,7 +36,7 @@ namespace HomeAway.API.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateReservationDto dto)
+        public async Task<IActionResult> Create(ReservationDto dto)
         {
             var reservation = new Reservation
             {

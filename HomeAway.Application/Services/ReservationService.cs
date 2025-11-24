@@ -30,13 +30,13 @@ namespace HomeAway.Application.Services
             _userManager = userManager;
         }
 
-        public async Task<ReservationDto?> BookRoomAsync(CreateReservationDto dto)
+        public async Task<ReservationDto?> BookRoomAsync(ReservationDto dto)
         {
             if (!await IsRoomAvailableAsync(dto.RoomId, dto.From, dto.To))
                 return null; // or throw a domain exception
 
 
-            decimal pricePerNight = _roomRepository.GetByIdAsync(dto.RoomId).Result.Price.Amount; 
+            decimal pricePerNight = await _roomRepository.GetByIdAsync(dto.RoomId).Price.Amount; 
             var nights = (int)(dto.To.Date - dto.From.Date).TotalDays;
             var total = pricePerNight * Math.Max(0, nights);
 
@@ -46,7 +46,8 @@ namespace HomeAway.Application.Services
                 RoomId = dto.RoomId,
                 UserId = dto.UserId,
                 DateRange = new DateRange(dto.From,dto.To),
-                TotalPrice = new Money(total, "USD")
+                Status = ReservationStatus.Pending,
+                TotalPrice = new Money(total, "USD"),
             };
 
 
@@ -64,23 +65,23 @@ namespace HomeAway.Application.Services
             };
         }
 
-        public async Task<bool> CreateReservationAsync(CreateReservationDto dto)
-        {
-            var room = await _roomRepository.GetByIdAsync(dto.RoomId);
-            if (room == null || !room.IsAvailable) return false;
+        //public async Task<bool> CreateReservationAsync(ReservationDto dto)
+        //{
+        //    var room = await _roomRepository.GetByIdAsync(dto.RoomId);
+        //    if (room == null || !room.IsAvailable) return false;
 
-            var reservation = new Reservation
-            {
-                RoomId = dto.RoomId,
-                UserId = dto.UserId,
-                DateRange = new DateRange(dto.From, dto.To),
-                Status = ReservationStatus.Pending,
-                TotalPrice = new Money((dto.To - dto.From).Days * room.Price.Amount, "USD")
-            };
+        //    var reservation = new Reservation
+        //    {
+        //        RoomId = dto.RoomId,
+        //        UserId = dto.UserId,
+        //        DateRange = new DateRange(dto.From, dto.To),
+        //        Status = ReservationStatus.Pending,
+        //        TotalPrice = new Money((dto.To - dto.From).Days * room.Price.Amount, "USD")
+        //    };
 
-            await _reservationRepository.AddAsync(reservation);
-            return true;
-        }
+        //    await _reservationRepository.AddAsync(reservation);
+        //    return true;
+        //}
 
         public async Task<ReservationDto?> GetByIdAsync(int id)
         {
