@@ -8,8 +8,10 @@ using System.Threading.Tasks;
 
 namespace HomeAway.Domain.Interfaces
 {
-    public interface IReservationRepository: IRepository<Reservation>
+    public interface IReservationRepository: IGenericRepository<Reservation>
     {
-        public Task<Reservation> GetByUserIdAsync(String userId);
+        public Task<List<Reservation>> GetByUserIdAsync(String userId);
+        Task<List<Reservation>> GetByRoomIdAsync(int roomId);
+        Task<bool> AnyOverlappingAsync(int roomId, DateTime from, DateTime to);
     }
 }

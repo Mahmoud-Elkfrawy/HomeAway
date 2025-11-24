@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace HomeAway.Domain.Interfaces
 {
-    public interface IRoomRepository:IGenericRepository<Room>
+    public interface IHotelRepository : IGenericRepository<Hotel>
     {
+
     }
 }

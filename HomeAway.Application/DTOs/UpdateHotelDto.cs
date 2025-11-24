@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HomeAway.Infrastructure.Data
+namespace HomeAway.Application.DTOs
 {
-    internal class DbSeeder
+    public class UpdateHotelDto
     {
     }
 }

@@ -8,18 +8,18 @@ namespace HomeAway.Domain.ValueObjects
 {
     public class DateRange
     {
-        public DateTime From { get; }
-        public DateTime To { get; }
+        public DateTime From { get; private set; }
+        public DateTime To { get; private set; }
+
+        private DateRange() { }  // EF Core needs this to create the object
+
 
         public DateRange(DateTime from, DateTime to)
         {
-            if (to <= from)
-                throw new ArgumentException("End date must be after start date");
-
             From = from;
             To = to;
         }
 
-        public int TotalNights => (To - From).Days;
+        public int Nights => (int)(To.Date - From.Date).TotalDays;   // if it cause any problem -> Comment it
     }
 }

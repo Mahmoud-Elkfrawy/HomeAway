@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace HomeAway.Application.Interfaces
 {
-    public interface IRepository<T> where T : class
+    public interface IGenericRepository<T> where T : class
     {
         Task<T> GetByIdAsync(int id);
+        Task<T> GetByNameAsync(String Name);
         Task<List<T>> GetAllAsync();
         Task AddAsync(T entity);
         Task UpdateAsync(T entity);
