@@ -14,7 +14,7 @@ namespace HomeAway.Application.Interfaces
 {
     public interface IReservationService
     {
-        Task<ReservationDto?> BookRoomAsync(ReservationDto dto);
+        Task<bool> BookRoomAsync(ReservationDto dto);
         Task<bool> UpdateAsync(ReservationDto dto);
 
         //Task<bool> CreateReservationAsync(ReservationDto dto);

@@ -30,10 +30,10 @@ namespace HomeAway.Application.Services
             _userManager = userManager;
         }
 
-        public async Task<ReservationDto?> BookRoomAsync(ReservationDto dto)
+        public async Task<bool> BookRoomAsync(ReservationDto dto)
         {
             if (!await IsRoomAvailableAsync(dto.RoomId, dto.From, dto.To))
-                return null; // or throw a domain exception
+                return false; // or throw a domain exception
 
             Room room = await _roomRepository.GetByIdAsync(dto.RoomId);
             decimal pricePerNight = room.Price.Amount;
@@ -54,15 +54,16 @@ namespace HomeAway.Application.Services
             await _reservationRepository.AddAsync(reservation);
 
 
-            return new ReservationDto
-            {
-                Id = reservation.Id,
-                RoomId = reservation.RoomId,
-                UserId = reservation.UserId,
-                From = reservation.DateRange.From,
-                To = reservation.DateRange.To,
-                TotalPrice = reservation.TotalPrice.Amount
-            };
+            //return new ReservationDto
+            //{
+            //    Id = reservation.Id,
+            //    RoomId = reservation.RoomId,
+            //    UserId = reservation.UserId,
+            //    From = reservation.DateRange.From,
+            //    To = reservation.DateRange.To,
+            //    TotalPrice = reservation.TotalPrice.Amount
+            //};
+            return true;
         }
 
         //public async Task<bool> CreateReservationAsync(ReservationDto dto)

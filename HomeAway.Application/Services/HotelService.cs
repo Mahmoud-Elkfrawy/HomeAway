@@ -39,6 +39,7 @@ namespace HomeAway.Application.Services
                 Id = h.Id,
                 Name = h.Name,
                 Address = h.Address
+
             };
         }
 
@@ -77,10 +78,10 @@ namespace HomeAway.Application.Services
 
         public async Task<bool> DeleteAsync(int id)
         {
-            //var hotel = await _hotelRepo.GetByIdAsync(id);
-            //if (hotel == null) return false;
+            var hotel = await _hotelRepository.GetByIdAsync(id);
+            if (hotel == null) return false;
 
-            //await _hotelRepo.DeleteAsync(hotel);
+            await _hotelRepository.DeleteAsync(hotel);
             return true;
         }
     }

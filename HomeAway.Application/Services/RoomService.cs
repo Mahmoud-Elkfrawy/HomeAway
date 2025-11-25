@@ -1,14 +1,15 @@
 ﻿using HomeAway.Application.DTOs;
 using HomeAway.Application.Interfaces;
+using HomeAway.Domain.Entities;
+using HomeAway.Domain.Enums;
+using HomeAway.Domain.Interfaces;
+using HomeAway.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using HomeAway.Domain.Entities;
-using HomeAway.Domain.Enums;
-using HomeAway.Domain.Interfaces;
-using HomeAway.Domain.ValueObjects;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace HomeAway.Application.Services
@@ -57,6 +58,7 @@ namespace HomeAway.Application.Services
                 Type = room.Type,
                 Quantity = room.Quantity,
                 IsAvailable = room.IsAvailable,
+                HotelId = room.HotelId,
                 //HotelName = room.Hotel.Name
             };
         }
@@ -67,7 +69,11 @@ namespace HomeAway.Application.Services
             if (room != null)
             {
                 room.Quantity = roomDto.Quantity;
-                //room.Type = roomDto.Type;
+                room.Price = roomDto.Price;
+                room.Type = roomDto.Type;
+                room.IsAvailable = roomDto.IsAvailable;
+                room.Number= roomDto.Number;
+
                 //room.IsAvailable = roomDto.IsAvailable;
                 await _roomRepository.UpdateAsync(room);
                 return roomDto;
