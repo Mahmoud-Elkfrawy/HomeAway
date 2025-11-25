@@ -19,7 +19,7 @@ namespace HomeAway.API.Controllers
 
             var users = _userService.GetAllUsersAsync();
 
-            return Ok();
+            return Ok(users);
         }
     }
 }

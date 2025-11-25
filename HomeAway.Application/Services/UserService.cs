@@ -87,10 +87,11 @@ namespace HomeAway.Application.Services
             return false;
         }
 
-        public Task<List<UserDto>> GetAllUsersAsync()
+        public async Task<List<UserDto>> GetAllUsersAsync()
         {
-            List<UserDto> users = new List<UserDto>();
-            foreach (var user in _userManager.Users)
+            var users = new List<UserDto>();
+            List<ApplicationUser> users1 = _userManager.Users.ToList();
+            foreach (var user in users1)
             {
                 users.Add(new UserDto
                 {
@@ -100,8 +101,8 @@ namespace HomeAway.Application.Services
                     Email = user.Email
                 });
             }
-            return Task.FromResult(users);
-            }
+            return users;
+        }
     }
 
 }

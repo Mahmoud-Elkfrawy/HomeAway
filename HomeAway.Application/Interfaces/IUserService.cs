@@ -1,5 +1,6 @@
 ﻿using HomeAway.Application.Auth;
 using HomeAway.Application.DTOs;
+using HomeAway.Infrastructure.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;

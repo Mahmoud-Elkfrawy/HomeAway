@@ -61,6 +61,7 @@ namespace HomeAway.API
             builder.Services.AddScoped<IRoomService, RoomService>();
             builder.Services.AddScoped<IHotelService, HotelService>();
             builder.Services.AddScoped<IReservationService, ReservationService>();
+            builder.Services.AddScoped<IUserService, UserService>();
 
             builder.Services.AddScoped<IRoomRepository, RoomRepository>();
             builder.Services.AddScoped<IHotelRepository, HotelRepository>();
