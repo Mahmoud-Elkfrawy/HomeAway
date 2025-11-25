@@ -10,6 +10,7 @@ namespace HomeAway.Test
     {
         public Class1()
         {
+            int x = 5;
         }
     }
 }
