@@ -1,5 +1,8 @@
-﻿using HomeAway.Application.Interfaces;
+﻿using HomeAway.Application.Auth;
+using HomeAway.Application.Interfaces;
+using HomeAway.Infrastructure.Identity;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HomeAway.API.Controllers
@@ -8,18 +11,68 @@ namespace HomeAway.API.Controllers
     [ApiController]
     public class AdminController : ControllerBase
     {
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly JwtTokenService _jwtTokenService;
         public IUserService _userService { get; set; }
-        public AdminController(IUserService userService)
+        public AdminController(UserManager<ApplicationUser> userManager,
+                               RoleManager<IdentityRole> roleManager,
+                               JwtTokenService jwtTokenService,
+                               IUserService userService)
         {
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _jwtTokenService = jwtTokenService;
             _userService = userService;
         }
+
         [HttpGet("GetAllUsers")]
         public IActionResult GetAllUsers()
         {
-
             var users = _userService.GetAllUsersAsync();
-
             return Ok(users);
+        }
+        [HttpPost("register")]
+        public async Task<IActionResult> Register(RegisterDto dto)
+        {
+            var user = new ApplicationUser
+            {
+                UserName = dto.Email,
+                Email = dto.Email,
+                FullName = dto.FullName
+            };
+
+
+            var result = await _userManager.CreateAsync(user, dto.Password);
+            if (!result.Succeeded) return BadRequest(result.Errors);
+
+
+            if (!await _roleManager.RoleExistsAsync("Admin"))
+                await _roleManager.CreateAsync(new IdentityRole("Admin"));
+
+
+            await _userManager.AddToRoleAsync(user, "Admin");
+
+
+            return Ok("Admin created successfully.");
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginDto dto)
+        {
+            var user = await _userManager.FindByNameAsync(dto.UserName);
+            if (user == null) return Unauthorized();
+
+
+            if (!await _userManager.CheckPasswordAsync(user, dto.Password))
+                return Unauthorized();
+
+
+            //var roles = await _userManager.GetRolesAsync(user);
+            var token = _jwtTokenService.GenerateToken(user);
+
+
+            return Ok(new { token });
         }
     }
 }
