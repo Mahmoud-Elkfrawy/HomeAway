@@ -51,7 +51,7 @@ namespace HomeAway.API.Controllers
 
         //[Authorize(Roles = "Admin,Provider")]
         [HttpPost]
-        public async Task<IActionResult> Create(CreateRoomDto dto)
+        public async Task<IActionResult> Create(RoomDto dto)
         {
             try
             {

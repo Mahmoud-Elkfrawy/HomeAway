@@ -29,22 +29,19 @@ namespace HomeAway.Infrastructure.Repositories
 
         public async Task<List<Room>> GetAllAsync()
         {
-            return await _context.Rooms
-                .Include(r => r.Hotel)          // if you have Hotel navigation
+            return await _context.Rooms        // if you have Hotel navigation
                 .ToListAsync();
         }
 
         public async Task<Room> GetByIdAsync(int id)
         {
             return await _context.Rooms
-                .Include(r => r.Hotel) //Optional
                 .FirstOrDefaultAsync(r => r.Id == id);
         }
 
         public async Task<Room> GetByNameAsync(string name)
         {
             return await _context.Rooms
-                .Include(r => r.Hotel)//Optional
                 .FirstOrDefaultAsync(r => r.Number == name);
         }
 

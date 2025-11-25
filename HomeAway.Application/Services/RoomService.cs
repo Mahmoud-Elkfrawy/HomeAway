@@ -54,10 +54,10 @@ namespace HomeAway.Application.Services
             {
                 Id = room.Id,
                 //Number = room.Number,
-                Type = room.Type.ToString(),
+                Type = room.Type,
                 Quantity = room.Quantity,
                 IsAvailable = room.IsAvailable,
-                HotelName = room.Hotel.Name
+                //HotelName = room.Hotel.Name
             };
         }
         public async Task<RoomDto> UpdateAsync(RoomDto roomDto)

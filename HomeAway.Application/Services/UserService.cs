@@ -1,4 +1,5 @@
-﻿using HomeAway.Application.DTOs;
+﻿using HomeAway.Application.Auth;
+using HomeAway.Application.DTOs;
 using HomeAway.Application.Interfaces;
 using HomeAway.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
@@ -19,7 +20,7 @@ namespace HomeAway.Application.Services
             _userManager = userManager;
         }
 
-        public async Task<bool> CreateUserAsync(UserDto userDto)
+        public async Task<bool> CreateUserAsync(RegisterDto userDto)
         {
             var user = new Infrastructure.Identity.ApplicationUser
             {
@@ -61,14 +62,46 @@ namespace HomeAway.Application.Services
 
         public async Task<bool> UpdateUserAsync(UserDto userDto)
         {
+            var user = await _userManager.FindByIdAsync(userDto.Id);
+
+            if (user != null)
+            {
+                user.FullName = userDto.FullName;
+                user.UserName = userDto.UserName;
+                user.Email = userDto.Email;
+                await _userManager.UpdateAsync(user);
+                return true;
+            }
             return false;
         }
 
         public async Task<bool> DeleteUserAsync(string id)
         {
-            return false;
+            var user = await _userManager.FindByIdAsync(id);
 
+            if (user != null)
+            {
+                await _userManager.DeleteAsync(user);
+                return true;
+            }
+            return false;
         }
+
+        public Task<List<UserDto>> GetAllUsersAsync()
+        {
+            List<UserDto> users = new List<UserDto>();
+            foreach (var user in _userManager.Users)
+            {
+                users.Add(new UserDto
+                {
+                    Id = user.Id,
+                    FullName = user.FullName,
+                    UserName = user.UserName,
+                    Email = user.Email
+                });
+            }
+            return Task.FromResult(users);
+            }
     }
 
 }

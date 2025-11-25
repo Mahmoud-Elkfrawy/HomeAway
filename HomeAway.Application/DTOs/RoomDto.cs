@@ -12,7 +12,7 @@ namespace HomeAway.Application.DTOs
     public class RoomDto
     {
         public int Id { get; set; }
-        public string HotelName { get; set; }
+        //public string HotelName { get; set; }
         public int Quantity { get; set; }
         public RoomType Type { get; set; }
         public bool IsAvailable { get; set; }
