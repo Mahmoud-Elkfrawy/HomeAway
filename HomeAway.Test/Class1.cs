@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HomeAway.Infrastructure.Repositories
+namespace HomeAway.Test
 {
-    internal class UserRepository
+    internal class Class1
     {
     }
 }

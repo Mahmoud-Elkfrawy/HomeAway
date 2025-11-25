@@ -7,7 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.22" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\HomeAway.Domain\HomeAway.Domain.csproj" />
+    <ProjectReference Include="..\HomeAway.Infrastructure\HomeAway.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
