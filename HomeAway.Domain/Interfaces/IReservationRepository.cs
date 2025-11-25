@@ -17,5 +17,6 @@ namespace HomeAway.Domain.Interfaces
         Task<List<Reservation>> GetByUserIdAsync(string userId);
 
         Task<bool> IsRoomAvailable(int roomId, DateTime from, DateTime to);
+
     }
 }

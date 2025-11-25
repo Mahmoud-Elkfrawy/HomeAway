@@ -30,9 +30,9 @@ namespace HomeAway.Infrastructure.Data
 
             // Room-Hotel relationship
             modelBuilder.Entity<Room>()
-                .HasOne(r => r.Hotel)
-                .WithMany(h => h.Rooms)
-                .HasForeignKey(r => r.HotelId);
+                .HasOne<Hotel>()                   // Room has 1 Hotel
+                .WithMany(h => h.Rooms)            // Hotel has many Rooms
+                .HasForeignKey(r => r.HotelId);    // FK on Room
 
             // Reservation relationships
             modelBuilder.Entity<Reservation>()

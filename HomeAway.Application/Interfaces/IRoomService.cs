@@ -10,9 +10,9 @@ namespace HomeAway.Application.Interfaces
 {
     public interface IRoomService
     {
-        Task<bool> CreateRoomAsync(CreateRoomDto roomDto);
+        Task<bool> CreateRoomAsync(RoomDto roomDto);
 
-        Task<List<RoomDto>> GetAllAsync();
+        Task<List<Room>> GetAllAsync();
 
         Task<RoomDto> GetRoomByIdAsync(int id);
         Task<RoomDto> UpdateAsync(RoomDto roomDto);

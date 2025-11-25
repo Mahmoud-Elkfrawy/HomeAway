@@ -22,13 +22,15 @@ namespace HomeAway.Application.Services
             _roomRepository = roomRepository;
         }
 
-        public async Task<bool> CreateRoomAsync(CreateRoomDto roomDto)
+        public async Task<bool> CreateRoomAsync(RoomDto roomDto)
         {
             var room = new Room
             {
                 Quantity = roomDto.Quantity,
                 Type = roomDto.Type,
-                Price = new Money(roomDto.Price, "USD"),
+                Price = roomDto.Price,
+                HotelId = roomDto.HotelId,
+
                 //IsAvailable = roomDto.IsAvailable,
                 //HotelId = _roomRepository.GetByNameAsync(roomDto.HotelName).Result.Id
             };
@@ -37,18 +39,10 @@ namespace HomeAway.Application.Services
             return true;
         }
 
-        public async Task<List<RoomDto>> GetAllAsync()
+        public async Task<List<Room>> GetAllAsync()
         {
             var rooms = await _roomRepository.GetAllAsync();
-            return rooms.Select(r => new RoomDto
-            {
-                Id = r.Id,
-                //Number = r.Number,
-                Type = r.Type.ToString(),
-                Quantity = r.Quantity,
-                IsAvailable = r.IsAvailable,
-                HotelName = r.Hotel.Name
-            }).ToList();
+            return rooms;
         }
 
         public async Task<RoomDto> GetRoomByIdAsync(int id)

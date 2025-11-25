@@ -35,8 +35,8 @@ namespace HomeAway.Application.Services
             if (!await IsRoomAvailableAsync(dto.RoomId, dto.From, dto.To))
                 return null; // or throw a domain exception
 
-
-            decimal pricePerNight = await _roomRepository.GetByIdAsync(dto.RoomId).Price.Amount; 
+            Room room = await _roomRepository.GetByIdAsync(dto.RoomId);
+            decimal pricePerNight = room.Price.Amount;
             var nights = (int)(dto.To.Date - dto.From.Date).TotalDays;
             var total = pricePerNight * Math.Max(0, nights);
 
@@ -126,5 +126,30 @@ namespace HomeAway.Application.Services
             if (from >= to) return false;
             return !await _reservationRepository.AnyOverlappingAsync(roomId, from, to);
         }
+
+        public async Task<bool> UpdateAsync(ReservationDto dto)
+        {
+            await _reservationRepository.UpdateAsync(new Reservation
+            {
+                Id = dto.Id,
+                RoomId = dto.RoomId,
+                UserId = dto.UserId,
+                DateRange = new DateRange(dto.From, dto.To),
+                Status = dto.Status,
+                TotalPrice = new Money(dto.TotalPrice, "USD")
+            });
+            return true;
+        }
+        public async Task<List<Reservation>> GetAllAsync()
+        { 
+            return await _reservationRepository.GetAllAsync();
+        
+        }
+        public async Task DeleteAsync(ReservationDto reservation)
+        {
+            Reservation reservation1  = await _reservationRepository.GetByIdAsync(reservation.Id);
+            await _reservationRepository.DeleteAsync(reservation1);
+        }
+        
     }
 }

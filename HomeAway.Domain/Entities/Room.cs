@@ -12,13 +12,10 @@ namespace HomeAway.Domain.Entities
     {
         public int Id { get; set; }
         public int? HotelId { get; set; }
-        public Hotel? Hotel { get; set; }
-
         public string? Number { get; set; }
         public RoomType Type { get; set; }
         public int Quantity { get; set; }
         public Money Price { get; set; }
-
-        public bool IsAvailable { get; set; }
+        public bool IsAvailable { get; set; } = true;
     }
 }

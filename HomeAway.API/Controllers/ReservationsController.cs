@@ -38,21 +38,13 @@ namespace HomeAway.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(ReservationDto dto)
         {
-            var reservation = new Reservation
-            {
-                RoomId = dto.RoomId,
-                UserId = dto.UserId,
-                DateRange = new DateRange(dto.From, dto.To),
-                Status = dto.Status,
-                TotalPrice = new Money(dto.TotalPrice, "USD")
-            };
-            await _reservationService.AddAsync(reservation);
-            return CreatedAtAction(nameof(GetById), new { id = reservation.Id }, reservation);
+            ReservationDto result = await _reservationService.BookRoomAsync(dto);
+            return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
         }
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, UpdateReservationDto dto)
+        public async Task<IActionResult> Update(int id, ReservationDto dto)
         {
             var existing = await _reservationService.GetByIdAsync(id);
             if (existing == null) return NotFound();

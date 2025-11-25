@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.12.35521.163
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11222.15 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeAway.API", "HomeAway.API\HomeAway.API.csproj", "{4C90EC71-3C99-4E9F-8D91-4CD1DC9518A0}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeAway.Application", "HomeAway.Application\HomeAway.Application.csproj", "{2DBBC77A-1BF9-4099-9A4F-983AC4EAB9E2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeAway.Infrastructure", "HomeAway.Infrastructure\HomeAway.Infrastructure.csproj", "{FD0675D5-BF55-4557-B6D4-DAFFEF80B5C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeAway.Test", "HomeAway.Test\HomeAway.Test.csproj", "{1E36A9BA-DFB6-4035-AC0E-317081DA6BA8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,8 +35,15 @@ Global
 		{FD0675D5-BF55-4557-B6D4-DAFFEF80B5C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD0675D5-BF55-4557-B6D4-DAFFEF80B5C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD0675D5-BF55-4557-B6D4-DAFFEF80B5C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E36A9BA-DFB6-4035-AC0E-317081DA6BA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E36A9BA-DFB6-4035-AC0E-317081DA6BA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E36A9BA-DFB6-4035-AC0E-317081DA6BA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E36A9BA-DFB6-4035-AC0E-317081DA6BA8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7FC7735E-F67C-4450-A68A-2AAA844285BE}
 	EndGlobalSection
 EndGlobal
