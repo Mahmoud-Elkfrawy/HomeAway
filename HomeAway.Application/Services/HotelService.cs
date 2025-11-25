@@ -39,6 +39,7 @@ namespace HomeAway.Application.Services
                 Id = h.Id,
                 Name = h.Name,
                 Address = h.Address
+
             };
         }
 

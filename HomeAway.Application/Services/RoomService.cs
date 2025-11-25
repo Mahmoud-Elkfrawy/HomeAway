@@ -57,6 +57,7 @@ namespace HomeAway.Application.Services
                 Type = room.Type,
                 Quantity = room.Quantity,
                 IsAvailable = room.IsAvailable,
+                HotelId = room.HotelId,
                 //HotelName = room.Hotel.Name
             };
         }
