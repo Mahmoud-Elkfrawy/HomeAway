@@ -38,8 +38,12 @@ namespace HomeAway.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(ReservationDto dto)
         {
-            ReservationDto result = await _reservationService.BookRoomAsync(dto);
-            return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+            var result = await _reservationService.BookRoomAsync(dto);
+            if (result == false)
+            {
+                return BadRequest();
+            }
+            return Created();
         }
 
 
