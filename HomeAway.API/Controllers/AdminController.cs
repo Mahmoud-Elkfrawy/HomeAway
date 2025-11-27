@@ -47,7 +47,7 @@ namespace HomeAway.API.Controllers
             {
                 var user = new ApplicationUser
                 {
-                    UserName = dto.Email,
+                    UserName = dto.UserName,
                     Email = dto.Email,
                     FullName = dto.FullName
                 };
@@ -73,32 +73,32 @@ namespace HomeAway.API.Controllers
 
         }
 
-        [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginDto dto)
-        {
-            try
-            {
-                var user = await _userManager.FindByNameAsync(dto.UserName);
-                if (user == null) return Unauthorized();
+        //[HttpPost("login")]
+        //public async Task<IActionResult> Login(LoginDto dto)
+        //{
+        //    try
+        //    {
+        //        var user = await _userManager.FindByNameAsync(dto.UserName);
+        //        if (user == null) return Unauthorized();
 
 
-                if (!await _userManager.CheckPasswordAsync(user, dto.Password))
-                    return Unauthorized();
+        //        if (!await _userManager.CheckPasswordAsync(user, dto.Password))
+        //            return Unauthorized();
 
 
-                //var roles = await _userManager.GetRolesAsync(user);
-                var token = _jwtTokenService.GenerateToken(user);
+        //        //var roles = await _userManager.GetRolesAsync(user);
+        //        var token = _jwtTokenService.GenerateToken(user);
 
 
-                return Ok(new { token });
+        //        return Ok(new { token });
 
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = "Internal server error", error = ex.Message });
-            }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(500, new { message = "Internal server error", error = ex.Message });
+        //    }
 
 
-        }
+        //}
     }
 }
