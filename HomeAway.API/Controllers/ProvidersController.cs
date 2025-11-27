@@ -29,45 +29,61 @@ namespace HomeAway.API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDto dto)
         {
-            var user = new ApplicationUser
+            try
             {
-                UserName = dto.Email,
-                Email = dto.Email,
-                FullName = dto.FullName
-            };
+                var user = new ApplicationUser
+                {
+                    UserName = dto.Email,
+                    Email = dto.Email,
+                    FullName = dto.FullName
+                };
+
+                var result = await _userManager.CreateAsync(user, dto.Password);
+                if (!result.Succeeded) return BadRequest(result.Errors);
 
 
-            var result = await _userManager.CreateAsync(user, dto.Password);
-            if (!result.Succeeded) return BadRequest(result.Errors);
+                if (!await _roleManager.RoleExistsAsync("Provider"))
+                    await _roleManager.CreateAsync(new IdentityRole("Provider"));
 
 
-            if (!await _roleManager.RoleExistsAsync("Provider"))
-                await _roleManager.CreateAsync(new IdentityRole("Provider"));
+                await _userManager.AddToRoleAsync(user, "Provider");
 
 
-            await _userManager.AddToRoleAsync(user, "Provider");
+                return Ok("Provider created successfully.");
 
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Internal server error", error = ex.Message });
+            }
 
-            return Ok("Provider created successfully.");
         }
 
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto dto)
         {
-            var user = await _userManager.FindByNameAsync(dto.UserName);
-            if (user == null) return Unauthorized();
+            try
+            {
+                var user = await _userManager.FindByNameAsync(dto.UserName);
+                if (user == null) return Unauthorized();
 
 
-            if (!await _userManager.CheckPasswordAsync(user, dto.Password))
-                return Unauthorized();
+                if (!await _userManager.CheckPasswordAsync(user, dto.Password))
+                    return Unauthorized();
 
 
-            //var roles = await _userManager.GetRolesAsync(user);
-            var token = _jwtTokenService.GenerateToken(user);
+                //var roles = await _userManager.GetRolesAsync(user);
+                var token = _jwtTokenService.GenerateToken(user);
 
 
-            return Ok(new { token });
+                return Ok(new { token });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Internal server error", error = ex.Message });
+            }
+
         }
     }
 }

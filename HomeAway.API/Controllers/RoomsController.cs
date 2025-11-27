@@ -77,13 +77,11 @@ namespace HomeAway.API.Controllers
                     return NotFound();
 
                 return NoContent();
-
             }
             catch (Exception ex)
             {
                 return StatusCode(500, new { message = "Internal server error", error = ex.Message });
             }
-
         }
 
         //[Authorize(Roles = "Admin,Provider")]
@@ -98,13 +96,11 @@ namespace HomeAway.API.Controllers
                     return NotFound();
 
                 return NoContent();
-
             }
             catch (Exception ex)
             {
                 return StatusCode(500, new { message = "Internal server error", error = ex.Message });
             }
-
         }
     }
 }
