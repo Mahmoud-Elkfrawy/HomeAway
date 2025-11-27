@@ -48,7 +48,6 @@ namespace HomeAway.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto dto)
         {
-
             try
             {
                 var user = await _userManager.FindByNameAsync(dto.UserName);
