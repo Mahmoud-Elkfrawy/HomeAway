@@ -21,58 +21,94 @@ namespace HomeAway.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var reservations = await _reservationService.GetAllAsync();
-            return Ok(reservations);
+            try
+            {
+                var reservations = await _reservationService.GetAllAsync();
+                return Ok(reservations);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Internal server error", error = ex.Message });
+            }
         }
 
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var reservation = await _reservationService.GetByIdAsync(id);
-            if (reservation == null) return NotFound();
-            return Ok(reservation);
+            try
+            {
+                var reservation = await _reservationService.GetByIdAsync(id);
+                if (reservation == null) return NotFound();
+                return Ok(reservation);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Internal server error", error = ex.Message });
+            }
         }
 
 
         [HttpPost]
         public async Task<IActionResult> Create(ReservationDto dto)
         {
-            var result = await _reservationService.BookRoomAsync(dto);
-            if (result == false)
+            try
             {
-                return BadRequest();
+                var result = await _reservationService.BookRoomAsync(dto);
+                if (result == false)
+                {
+                    return BadRequest();
+                }
+                return Created();
             }
-            return Created();
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Internal server error", error = ex.Message });
+            }
         }
 
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, ReservationDto dto)
         {
-            var existing = await _reservationService.GetByIdAsync(id);
-            if (existing == null) return NotFound();
+            try
+            {
+                var existing = await _reservationService.GetByIdAsync(id);
 
+                if (existing == null) return NotFound();
 
-            existing.RoomId = dto.RoomId;
-            existing.From = dto.From;
-            existing.To = dto.To;
-            existing.Status = dto.Status;
-            existing.TotalPrice = dto.TotalPrice;
-            await _reservationService.UpdateAsync(existing);
-            return NoContent();
+                existing.RoomId = dto.RoomId;
+                existing.From = dto.From;
+                existing.To = dto.To;
+                existing.Status = dto.Status;
+                existing.TotalPrice = dto.TotalPrice;
+                await _reservationService.UpdateAsync(existing);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Internal server error", error = ex.Message });
+            }
         }
 
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var reservation = await _reservationService.GetByIdAsync(id);
-            if (reservation == null) return NotFound();
+            try
+            {
+                var reservation = await _reservationService.GetByIdAsync(id);
+                if (reservation == null) return NotFound();
 
+                await _reservationService.DeleteAsync(reservation);
+                return NoContent();
 
-            await _reservationService.DeleteAsync(reservation);
-            return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Internal server error", error = ex.Message });
+            }
+
         }
     }
 }
