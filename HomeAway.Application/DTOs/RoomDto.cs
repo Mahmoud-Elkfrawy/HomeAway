@@ -19,6 +19,6 @@ namespace HomeAway.Application.DTOs
         public int? HotelId { get; set; }
 
         public string? Number { get; set; }
-        public Money Price { get; set; }
+        public Decimal Price { get; set; }
     }
 }
