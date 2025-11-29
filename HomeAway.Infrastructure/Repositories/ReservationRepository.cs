@@ -12,7 +12,6 @@ namespace HomeAway.Infrastructure.Repositories
 {
     public class ReservationRepository : IReservationRepository
     {
-
         private readonly HomeAwayDbContext _context;
 
         public ReservationRepository(HomeAwayDbContext context)

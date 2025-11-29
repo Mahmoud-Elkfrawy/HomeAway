@@ -45,7 +45,7 @@ namespace HomeAway.Application.Services
             {
                 RoomId = dto.RoomId,
                 UserId = dto.UserId,
-                DateRange = new DateRange(dto.From,dto.To),
+                DateRange = new DateRange(dto.From, dto.To),
                 Status = ReservationStatus.Pending,
                 TotalPrice = new Money(total, "USD"),
             };
@@ -142,15 +142,24 @@ namespace HomeAway.Application.Services
             return true;
         }
         public async Task<List<Reservation>> GetAllAsync()
-        { 
+        {
             return await _reservationRepository.GetAllAsync();
-        
+
         }
         public async Task DeleteAsync(ReservationDto reservation)
         {
-            Reservation reservation1  = await _reservationRepository.GetByIdAsync(reservation.Id);
+            Reservation reservation1 = await _reservationRepository.GetByIdAsync(reservation.Id);
             await _reservationRepository.DeleteAsync(reservation1);
         }
-        
+        public async Task<decimal> HomeAwayProfit(List<Reservation> reservation)
+        {
+            decimal total = 0;
+            foreach (var item in reservation)
+            {
+                total += item.TotalPrice.Amount;
+            }
+            return total*0.1m;
+        }
+
     }
 }
