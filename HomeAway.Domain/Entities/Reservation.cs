@@ -14,12 +14,12 @@ namespace HomeAway.Domain.Entities
         public int Id { get; set; }
 
         public int RoomId { get; set; }
-        public Room Room { get; set; } = new();
+        public Room? Room { get; set; }
 
         public String UserId { get; set; } = String.Empty;
 
         public DateRange DateRange { get; set; }
-        public Money TotalPrice { get; set; } 
+        public Decimal TotalPrice { get; set; } 
 
         public ReservationStatus Status { get; set; }
     }
