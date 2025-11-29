@@ -19,5 +19,6 @@ namespace HomeAway.Application.Interfaces
         Task<bool> UpdateAsync(HotelDto dto);
 
         Task<bool> DeleteAsync(int id);
+
     }
 }

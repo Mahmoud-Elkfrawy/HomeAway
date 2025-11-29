@@ -14,7 +14,7 @@ namespace HomeAway.Infrastructure.Repositories
         {
             _context = context;
         }
-
+        
         public async Task AddAsync(Room entity)
         {
             await _context.Rooms.AddAsync(entity);

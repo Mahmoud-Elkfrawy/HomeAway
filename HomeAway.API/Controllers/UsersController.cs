@@ -24,49 +24,34 @@ namespace HomeAway.API.Controllers
             _jwtTokenService = jwtTokenService;
         }
 
-
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDto dto)
         {
-            var user = new ApplicationUser
+            try
             {
-                UserName = dto.Email,
-                Email = dto.Email,
-                FullName = dto.FullName
-            };
+                var user = new ApplicationUser
+                {
+                    UserName = dto.UserName,
+                    Email = dto.Email,
+                    FullName = dto.FullName
+                };
+
+                var result = await _userManager.CreateAsync(user, dto.Password);
+                if (!result.Succeeded) return BadRequest(result.Errors);
+
+                if (!await _roleManager.RoleExistsAsync("User"))
+                    await _roleManager.CreateAsync(new IdentityRole("User"));
+
+                await _userManager.AddToRoleAsync(user, "User");
 
 
-            var result = await _userManager.CreateAsync(user, dto.Password);
-            if (!result.Succeeded) return BadRequest(result.Errors);
+                return Ok("User created successfully.");
 
-
-            if (!await _roleManager.RoleExistsAsync("User"))
-                await _roleManager.CreateAsync(new IdentityRole("User"));
-
-
-            await _userManager.AddToRoleAsync(user, "User");
-
-
-            return Ok("User created successfully.");
-        }
-
-
-        [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginDto dto)
-        {
-            var user = await _userManager.FindByNameAsync(dto.UserName);
-            if (user == null) return Unauthorized();
-
-
-            if (!await _userManager.CheckPasswordAsync(user, dto.Password))
-                return Unauthorized();
-
-
-            //var roles = await _userManager.GetRolesAsync(user);
-            var token = _jwtTokenService.GenerateToken(user);
-
-
-            return Ok(new { token });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Internal server error", error = ex.Message });
+            }
         }
     }
 }
