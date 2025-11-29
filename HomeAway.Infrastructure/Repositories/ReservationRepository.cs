@@ -42,7 +42,9 @@ namespace HomeAway.Infrastructure.Repositories
 
         public Task<List<Reservation>> GetAllAsync()
         {
-            return _context.Reservations.ToListAsync();
+            return _context.Reservations
+                        .Include(r => r.Room)
+                        .ToListAsync();
         }
 
         public async Task<Reservation> GetByIdAsync(int id)

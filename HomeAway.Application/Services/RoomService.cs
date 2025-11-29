@@ -31,6 +31,7 @@ namespace HomeAway.Application.Services
                 Type = roomDto.Type,
                 Price = roomDto.Price,
                 HotelId = roomDto.HotelId,
+                Number = roomDto.Number,
 
                 //IsAvailable = roomDto.IsAvailable,
                 //HotelId = _roomRepository.GetByNameAsync(roomDto.HotelName).Result.Id

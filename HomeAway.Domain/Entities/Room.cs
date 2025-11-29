@@ -15,7 +15,7 @@ namespace HomeAway.Domain.Entities
         public string? Number { get; set; }
         public RoomType Type { get; set; }
         public int Quantity { get; set; }
-        public Money Price { get; set; }
+        public Decimal Price { get; set; }
         public bool IsAvailable { get; set; } = true;
     }
 }

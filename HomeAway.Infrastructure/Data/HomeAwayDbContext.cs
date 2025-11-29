@@ -13,7 +13,7 @@ using HomeAway.Domain.ValueObjects;
 
 namespace HomeAway.Infrastructure.Data
 {
-    public class HomeAwayDbContext : IdentityDbContext<ApplicationUser,IdentityRole, string>
+    public class HomeAwayDbContext : IdentityDbContext<ApplicationUser, IdentityRole, string>
     {
         public HomeAwayDbContext(DbContextOptions<HomeAwayDbContext> options)
             : base(options)
@@ -49,28 +49,15 @@ namespace HomeAway.Infrastructure.Data
                     dr.Property(x => x.To).HasColumnName("To");
                 });
 
-                r.OwnsOne(x => x.TotalPrice, money =>
-                {
-                    money.Property(m => m.Amount)
-                         .HasColumnName("TotalPrice")
-                         .HasPrecision(18, 2);
 
-                    money.Property(m => m.Currency)
-                         .HasColumnName("Currency");
-                });
             });
+            modelBuilder.Entity<Reservation>()
+                .Property(r => r.TotalPrice)
+                .HasPrecision(18, 2);
 
             modelBuilder.Entity<Room>()
-        .OwnsOne(r => r.Price, money =>
-        {
-            money.Property(m => m.Amount)
-                 .HasColumnName("Price")
-                 .HasPrecision(18, 2);
-
-            money.Property(m => m.Currency)
-                 .HasColumnName("PriceCurrency")
-                 .HasMaxLength(3);
-        });
+                .Property(r => r.Price)
+                .HasPrecision(18, 2);
         }
 
     }

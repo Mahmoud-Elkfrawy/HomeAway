@@ -30,13 +30,13 @@ namespace HomeAway.Application.Services
             _userManager = userManager;
         }
 
-        public async Task<bool> BookRoomAsync(ReservationDto dto)
+        public async Task<bool> BookRoomAsync(CreateReservationDto dto)
         {
             if (!await IsRoomAvailableAsync(dto.RoomId, dto.From, dto.To))
                 return false; // or throw a domain exception
 
             Room room = await _roomRepository.GetByIdAsync(dto.RoomId);
-            decimal pricePerNight = room.Price.Amount;
+            decimal pricePerNight = room.Price;
             var nights = (int)(dto.To.Date - dto.From.Date).TotalDays;
             var total = pricePerNight * Math.Max(0, nights);
 
@@ -47,7 +47,7 @@ namespace HomeAway.Application.Services
                 UserId = dto.UserId,
                 DateRange = new DateRange(dto.From, dto.To),
                 Status = ReservationStatus.Pending,
-                TotalPrice = new Money(total, "USD"),
+                TotalPrice = total,
             };
 
 
@@ -95,7 +95,7 @@ namespace HomeAway.Application.Services
                 UserId = r.UserId,
                 From = r.DateRange.From,
                 To = r.DateRange.To,
-                TotalPrice = r.TotalPrice.Amount
+                TotalPrice = r.TotalPrice
             };
         }
 
@@ -118,7 +118,7 @@ namespace HomeAway.Application.Services
                 From = r.DateRange.From,
                 To = r.DateRange.To,
                 Status = r.Status,
-                TotalPrice = r.TotalPrice.Amount
+                TotalPrice = r.TotalPrice
             }).ToList();
         }
 
@@ -137,7 +137,7 @@ namespace HomeAway.Application.Services
                 UserId = dto.UserId,
                 DateRange = new DateRange(dto.From, dto.To),
                 Status = dto.Status,
-                TotalPrice = new Money(dto.TotalPrice, "USD")
+                TotalPrice = dto.TotalPrice
             });
             return true;
         }
@@ -156,7 +156,7 @@ namespace HomeAway.Application.Services
             decimal total = 0;
             foreach (var item in reservation)
             {
-                total += item.TotalPrice.Amount;
+                total += item.TotalPrice;
             }
             return total*0.1m;
         }
