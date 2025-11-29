@@ -34,7 +34,6 @@ namespace HomeAway.API
             Console.WriteLine("DB => " + builder.Configuration.GetConnectionString("DefaultConnection2"));
 
 
-
             builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 
             builder.Services.AddAuthentication(options =>
@@ -57,6 +56,7 @@ namespace HomeAway.API
                             ValidateIssuerSigningKey = true
                         };
                     });
+
             builder.Services.AddScoped<HomeAway.Infrastructure.Identity.JwtTokenService>();
             builder.Services.AddScoped<IRoomService, RoomService>();
             builder.Services.AddScoped<IHotelService, HotelService>();

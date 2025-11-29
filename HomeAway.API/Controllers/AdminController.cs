@@ -38,7 +38,6 @@ namespace HomeAway.API.Controllers
             {
                 return StatusCode(500, new { message = "Internal server error", error = ex.Message });
             }
-
         }
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDto dto)
