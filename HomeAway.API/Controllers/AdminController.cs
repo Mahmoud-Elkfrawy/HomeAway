@@ -14,16 +14,19 @@ namespace HomeAway.API.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly JwtTokenService _jwtTokenService;
+        private readonly IReservationService _reservation;
         public IUserService _userService { get; set; }
         public AdminController(UserManager<ApplicationUser> userManager,
                                RoleManager<IdentityRole> roleManager,
                                JwtTokenService jwtTokenService,
-                               IUserService userService)
+                               IUserService userService,
+                               IReservationService reservation)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _jwtTokenService = jwtTokenService;
             _userService = userService;
+            _reservation = reservation;
         }
 
         [HttpGet("GetAllUsers")]
@@ -68,6 +71,18 @@ namespace HomeAway.API.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, new { message = "Internal server error", error = ex.Message });
+            }
+        }
+        [HttpGet("profit")]
+        public async Task<decimal> HomeAwayProfit()
+        {
+            try
+            {
+                return await _reservation.HomeAwayProfit();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error calculating profit: " + ex.Message);
             }
         }
     }

@@ -29,5 +29,6 @@ namespace HomeAway.Application.Interfaces
         //Task AddAsync(Reservation reservation);
         Task<List<Reservation>> GetAllAsync();
         Task DeleteAsync(ReservationDto reservation);
+        Task<decimal> HomeAwayProfit();
     }
 }
