@@ -16,7 +16,7 @@ namespace HomeAway.Application.Interfaces
 
         Task<int> CreateAsync(HotelDto dto);
 
-        Task<bool> UpdateAsync(HotelDto dto);
+        Task<bool> UpdateAsync(UpdateHotelDto dto);
 
         Task<bool> DeleteAsync(int id);
 

@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using HomeAway.Domain.Interfaces;
 
-namespace HomeAway.Application.Interfaces
+namespace HomeAway.Domain.Interfaces
 {
     public interface IUnitOfWork
     {
-        IReservationRepository Reservation { get; }
+        IReservationRepository Reservations { get; }
         IRoomRepository Rooms { get; }
-
-        Task<int> CompleteAsync();
+        IHotelRepository Hotels { get; }
+        Task<int> CompleteAsync();  
     }
 }
