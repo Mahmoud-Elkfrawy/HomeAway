@@ -78,8 +78,19 @@ namespace HomeAway.Infrastructure.Repositories
 
         public async Task UpdateAsync(Reservation reservation)
         {
-             _context.Reservations.Update(reservation);
+            var existing = await _context.Reservations
+                .FirstOrDefaultAsync(r => r.Id == reservation.Id);
+
+            if (existing == null)
+                throw new Exception("Reservation not found");
+
+            existing.DateRange = reservation.DateRange;
+            //existing.TotalPrice = reservation.TotalPrice;
+            //existing.RoomId = reservation.RoomId;
+            existing.Status = reservation.Status;
+
             await _context.SaveChangesAsync();
         }
+
     }
 }

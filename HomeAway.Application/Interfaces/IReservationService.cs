@@ -15,9 +15,7 @@ namespace HomeAway.Application.Interfaces
     public interface IReservationService
     {
         Task<bool> BookRoomAsync(CreateReservationDto dto);
-        Task<bool> UpdateAsync(ReservationDto dto);
-
-        //Task<bool> CreateReservationAsync(ReservationDto dto);
+        Task<bool> UpdateAsync(UpdateResrvationDto dto);
 
         Task<ReservationDto?> GetByIdAsync(int id);
 
@@ -26,7 +24,6 @@ namespace HomeAway.Application.Interfaces
         Task<List<ReservationDto>> GetUserReservationsAsync(string userId);
 
         Task<bool> IsRoomAvailableAsync(int roomId, DateTime from, DateTime to);
-        //Task AddAsync(Reservation reservation);
         Task<List<Reservation>> GetAllAsync();
         Task DeleteAsync(ReservationDto reservation);
         Task<decimal> HomeAwayProfit();

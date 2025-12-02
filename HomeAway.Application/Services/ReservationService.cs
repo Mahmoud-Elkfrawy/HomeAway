@@ -54,18 +54,9 @@ namespace HomeAway.Application.Services
 
             await _reservationRepository.AddAsync(reservation);
 
-
-            //return new ReservationDto
-            //{
-            //    Id = reservation.Id,
-            //    RoomId = reservation.RoomId,
-            //    UserId = reservation.UserId,
-            //    From = reservation.DateRange.From,
-            //    To = reservation.DateRange.To,
-            //    TotalPrice = reservation.TotalPrice.Amount
-            //};
             return true;
         }
+        #region MyRegion
 
         //public async Task<bool> CreateReservationAsync(ReservationDto dto)
         //{
@@ -83,7 +74,8 @@ namespace HomeAway.Application.Services
 
         //    await _reservationRepository.AddAsync(reservation);
         //    return true;
-        //}
+        //} 
+        #endregion
 
         public async Task<ReservationDto?> GetByIdAsync(int id)
         {
@@ -129,16 +121,16 @@ namespace HomeAway.Application.Services
             return !await _reservationRepository.AnyOverlappingAsync(roomId, from, to);
         }
 
-        public async Task<bool> UpdateAsync(ReservationDto dto)
+        public async Task<bool> UpdateAsync(UpdateResrvationDto dto)
         {
             await _reservationRepository.UpdateAsync(new Reservation
             {
                 Id = dto.Id,
-                RoomId = dto.RoomId,
-                UserId = dto.UserId,
+                //RoomId = dto.RoomId,
+                //UserId = dto.UserId,
                 DateRange = new DateRange(dto.From, dto.To),
                 Status = dto.Status,
-                TotalPrice = dto.TotalPrice
+                //TotalPrice = dto.TotalPrice
             });
             return true;
         }
@@ -155,14 +147,10 @@ namespace HomeAway.Application.Services
         public async Task<decimal> HomeAwayProfit()
         {
             List<Reservation> reservation = await _reservationRepository.GetAllAsync();
-            decimal total = 0;
-            foreach (var item in reservation)
-            {
-                if (item.Status == ReservationStatus.Confirmed || item.Status == ReservationStatus.Completed)
-                {
-                    total += item.TotalPrice;
-                }
-            }
+            //decimal total = 0;
+            decimal total = reservation
+                    .Where(r => r.Status == ReservationStatus.Confirmed || r.Status == ReservationStatus.Completed)
+                    .Sum(r => r.TotalPrice);
             return total * 0.1m;
         }
 
