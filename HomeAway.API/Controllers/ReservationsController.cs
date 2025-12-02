@@ -68,21 +68,21 @@ namespace HomeAway.API.Controllers
         }
 
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, ReservationDto dto)
+        [HttpPut]
+        public async Task<IActionResult> Update(UpdateResrvationDto dto)
         {
             try
             {
-                var existing = await _reservationService.GetByIdAsync(id);
+                //var existing = await _reservationService.GetByIdAsync(dto.Id);
 
-                if (existing == null) return NotFound();
+                //if (existing == null) return NotFound();
 
-                existing.RoomId = dto.RoomId;
-                existing.From = dto.From;
-                existing.To = dto.To;
-                existing.Status = dto.Status;
-                existing.TotalPrice = dto.TotalPrice;
-                await _reservationService.UpdateAsync(existing);
+                ////existing.RoomId = dto.RoomId;
+                //existing.From = dto.From;
+                //existing.To = dto.To;
+                //existing.Status = dto.Status;
+                ////existing.TotalPrice = dto.TotalPrice;
+                await _reservationService.UpdateAsync(dto);
                 return NoContent();
             }
             catch (Exception ex)

@@ -5,6 +5,7 @@ using HomeAway.Domain.Interfaces;
 using HomeAway.Infrastructure.Data;
 using HomeAway.Infrastructure.Identity;
 using HomeAway.Infrastructure.Repositories;
+using HomeAway.Infrastructure.UnitOfWork;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -67,7 +68,7 @@ namespace HomeAway.API
             builder.Services.AddScoped<IHotelRepository, HotelRepository>();
             builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
 
-
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
