@@ -25,7 +25,12 @@ namespace HomeAway.Application.Services
             {
                 Id = h.Id,
                 Name = h.Name,
-                Address = h.Address
+                Address = h.Address,
+                Description = h.Description,
+                Email = h.Email,
+                PhoneNumber = h.PhoneNumber,
+                images = h.images
+
             }).ToList();
         }
 
@@ -60,7 +65,7 @@ namespace HomeAway.Application.Services
             return hotel.Id;
         }
 
-        public async Task<bool> UpdateAsync(HotelDto dto)
+        public async Task<bool> UpdateAsync(UpdateHotelDto dto)
         {
             var hotel = await _hotelRepository.GetByIdAsync(dto.Id);
             if (hotel == null) return false;

@@ -39,9 +39,24 @@ namespace HomeAway.Infrastructure.Repositories
 
         public async Task UpdateAsync(Hotel hotel)
         {
-            _context.Hotels.Update(hotel);
+            var existing = await _context.Hotels
+                .FirstOrDefaultAsync(h => h.Id == hotel.Id);
+
+            if (existing == null)
+                throw new Exception("Hotel not found");
+
+            // Update fields
+            existing.Name = hotel.Name;
+            existing.Description = hotel.Description;
+            existing.Address = hotel.Address;
+            existing.Email = hotel.Email;
+            existing.images = hotel.images;
+            existing.PhoneNumber = hotel.PhoneNumber;
+            existing.Rating = hotel.Rating;
+
             await _context.SaveChangesAsync();
         }
+
 
         public async Task DeleteAsync(Hotel hotel)
         {

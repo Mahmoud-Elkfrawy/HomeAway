@@ -47,8 +47,20 @@ namespace HomeAway.Infrastructure.Repositories
 
         public async Task UpdateAsync(Room entity)
         {
-            _context.Rooms.Update(entity);
+            var existing = await _context.Rooms
+                .FirstOrDefaultAsync(r => r.Id == entity.Id);
+
+            if (existing == null)
+                throw new Exception("Room not found");
+
+            existing.Number = entity.Number;
+            existing.Price = entity.Price;
+            existing.Type = entity.Type;
+            existing.Quantity = entity.Quantity;
+            existing.IsAvailable = entity.IsAvailable;
+
             await _context.SaveChangesAsync();
         }
+
     }
 }
