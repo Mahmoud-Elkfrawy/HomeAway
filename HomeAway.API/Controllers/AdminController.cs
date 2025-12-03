@@ -30,11 +30,11 @@ namespace HomeAway.API.Controllers
         }
 
         [HttpGet("GetAllUsers")]
-        public IActionResult GetAllUsers()
+        public async Task<IActionResult> GetAllUsers()
         {
             try
             {
-                var users = _userService.GetAllUsersAsync();
+                var users = await _userService.GetAllUsersAsync(); // <-- FIX HERE
                 return Ok(users);
             }
             catch (Exception ex)
@@ -74,16 +74,52 @@ namespace HomeAway.API.Controllers
             }
         }
         [HttpGet("profit")]
-        public async Task<decimal> HomeAwayProfit()
+        public async Task<IActionResult> HomeAwayProfit()
         {
             try
             {
-                return await _reservation.HomeAwayProfit();
+                return Ok(await _reservation.HomeAwayProfit());
             }
             catch (Exception ex)
             {
-                throw new Exception("Error calculating profit: " + ex.Message);
+                return StatusCode(500, new { message = "Internal server error", error = ex.Message });
             }
         }
+        [HttpDelete("{UserID}")]
+        public async Task<IActionResult> DeleteUser(string UserID)
+        {
+            try
+            {
+                if (await _userService.DeleteUserAsync(UserID))
+                {
+                    return NoContent();
+                }
+                else
+                {
+                    return BadRequest("Failed to delete user.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Internal server error", error = ex.Message });
+            }
+        }
+        [HttpPost("Promote/{userId}")]
+        public async Task<IActionResult> AssignRole(string userId)
+        {
+            try
+            {
+                var result = await _userService.AssignRoleAsync(userId, "Admin");
+                if (result)
+                    return Ok("Role assigned successfully.");
+                else
+                    return BadRequest("Failed to assign role.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Internal server error", error = ex.Message });
+            }
+        }
+
     }
 }

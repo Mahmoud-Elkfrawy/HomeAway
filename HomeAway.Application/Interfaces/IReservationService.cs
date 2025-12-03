@@ -24,7 +24,7 @@ namespace HomeAway.Application.Interfaces
         Task<List<ReservationDto>> GetUserReservationsAsync(string userId);
 
         Task<bool> IsRoomAvailableAsync(int roomId, DateTime from, DateTime to);
-        Task<List<Reservation>> GetAllAsync();
+        Task<List<ReservationDto>> GetAllAsync();
         Task DeleteAsync(ReservationDto reservation);
         Task<decimal> HomeAwayProfit();
     }
