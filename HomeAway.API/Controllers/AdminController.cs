@@ -30,11 +30,11 @@ namespace HomeAway.API.Controllers
         }
 
         [HttpGet("GetAllUsers")]
-        public IActionResult GetAllUsers()
+        public async Task<IActionResult> GetAllUsers()
         {
             try
             {
-                var users = _userService.GetAllUsersAsync();
+                var users = await _userService.GetAllUsersAsync(); // <-- FIX HERE
                 return Ok(users);
             }
             catch (Exception ex)
