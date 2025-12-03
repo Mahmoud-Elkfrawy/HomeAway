@@ -6,4 +6,11 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HomeAway.API\HomeAway.API.csproj" />
+    <ProjectReference Include="..\HomeAway.Application\HomeAway.Application.csproj" />
+    <ProjectReference Include="..\HomeAway.Domain\HomeAway.Domain.csproj" />
+    <ProjectReference Include="..\HomeAway.Infrastructure\HomeAway.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
