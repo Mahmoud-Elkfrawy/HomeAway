@@ -1,6 +1,7 @@
 ﻿using HomeAway.Application.Auth;
 using HomeAway.Application.DTOs;
 using HomeAway.Infrastructure.Identity;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace HomeAway.Application.Interfaces
         Task<bool> UpdateUserAsync(UserDto userDto);
         Task<bool> DeleteUserAsync(String id);
         Task<List<UserDto>> GetAllUsersAsync();
+        Task<bool> AssignRoleAsync(string userId, string role);
 
     }
 }

@@ -97,5 +97,22 @@ namespace HomeAway.API.Controllers
                 throw new Exception("Error calculating profit: " + ex.Message);
             }
         }
+        [HttpPost("Promote/{userId}")]
+        public async Task<IActionResult> AssignRole(string userId)
+        {
+            try
+            {
+                var result = await _userService.AssignRoleAsync(userId, "Admin");
+                if (result)
+                    return Ok("Role assigned successfully.");
+                else
+                    return BadRequest("Failed to assign role.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Internal server error", error = ex.Message });
+            }
+        }
+
     }
 }
