@@ -85,5 +85,17 @@ namespace HomeAway.API.Controllers
                 throw new Exception("Error calculating profit: " + ex.Message);
             }
         }
+        [HttpDelete("{UserID}")]
+        public async Task<bool> DeleteUser(string UserID)
+        {
+            try
+            {
+                return await _userService.DeleteUserAsync(UserID);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error calculating profit: " + ex.Message);
+            }
+        }
     }
 }
