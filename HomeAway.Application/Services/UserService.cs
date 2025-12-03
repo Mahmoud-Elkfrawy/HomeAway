@@ -93,12 +93,16 @@ namespace HomeAway.Application.Services
             List<ApplicationUser> users1 = _userManager.Users.ToList();
             foreach (var user in users1)
             {
+                var role = await _userManager.GetRolesAsync(user); // <-- get roles
+
                 users.Add(new UserDto
                 {
                     Id = user.Id,
                     FullName = user.FullName,
                     UserName = user.UserName,
-                    Email = user.Email
+                    Email = user.Email,
+                    Role = role.ToList()
+
                 });
             }
             return users;

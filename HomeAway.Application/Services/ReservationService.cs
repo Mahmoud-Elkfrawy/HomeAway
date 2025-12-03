@@ -88,7 +88,8 @@ namespace HomeAway.Application.Services
                 UserId = r.UserId,
                 From = r.DateRange.From,
                 To = r.DateRange.To,
-                TotalPrice = r.TotalPrice
+                TotalPrice = r.TotalPrice,
+                Status = r.Status,
             };
         }
 
@@ -134,9 +135,20 @@ namespace HomeAway.Application.Services
             });
             return true;
         }
-        public async Task<List<Reservation>> GetAllAsync()
+        public async Task<List<ReservationDto>> GetAllAsync()
         {
-            return await _reservationRepository.GetAllAsync();
+            var reservations = await _reservationRepository.GetAllAsync();
+            
+            return reservations.Select(r => new ReservationDto
+            {
+                Id = r.Id,
+                RoomId = r.RoomId,
+                UserId = r.UserId,
+                From = r.DateRange.From,
+                To = r.DateRange.To,
+                TotalPrice = r.TotalPrice,
+                Status = r.Status,
+            }).ToList();
 
         }
         public async Task DeleteAsync(ReservationDto reservation)
