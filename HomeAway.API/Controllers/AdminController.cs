@@ -74,27 +74,34 @@ namespace HomeAway.API.Controllers
             }
         }
         [HttpGet("profit")]
-        public async Task<decimal> HomeAwayProfit()
+        public async Task<IActionResult> HomeAwayProfit()
         {
             try
             {
-                return await _reservation.HomeAwayProfit();
+                return Ok(await _reservation.HomeAwayProfit());
             }
             catch (Exception ex)
             {
-                throw new Exception("Error calculating profit: " + ex.Message);
+                return StatusCode(500, new { message = "Internal server error", error = ex.Message });
             }
         }
         [HttpDelete("{UserID}")]
-        public async Task<bool> DeleteUser(string UserID)
+        public async Task<IActionResult> DeleteUser(string UserID)
         {
             try
             {
-                return await _userService.DeleteUserAsync(UserID);
+                if (await _userService.DeleteUserAsync(UserID))
+                {
+                    return NoContent();
+                }
+                else
+                {
+                    return BadRequest("Failed to delete user.");
+                }
             }
             catch (Exception ex)
             {
-                throw new Exception("Error calculating profit: " + ex.Message);
+                return StatusCode(500, new { message = "Internal server error", error = ex.Message });
             }
         }
         [HttpPost("Promote/{userId}")]
