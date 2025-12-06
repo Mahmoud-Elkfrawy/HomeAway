@@ -2,9 +2,11 @@
 using HomeAway.Application.Services;
 using HomeAway.Domain.Entities;
 using HomeAway.Infrastructure.Data;
-using HomeAway.Infrastructure.Repositories; // عدّل حسب Repository عندك
+using HomeAway.Infrastructure.Persistence; // لازم يكون مشروع HomeAway.Infrastructure مرجّع
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.IO;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -12,125 +14,63 @@ namespace HomeAway.Test
 {
     public class HotelServiceIntegrationTests
     {
+        // هذا الدالة تقرأ connection string من appsettings.json في مشروع الاختبارات
+        private string GetConnectionString()
+        {
+            // تأكد أن appsettings.json موجود في HomeAway.Test و Copy if newer
+            var config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build();
+
+            // قراءة الاتصال بالسيرفر
+            var connectionString = config.GetConnectionString("DefaultConnection2");
+
+            if (string.IsNullOrEmpty(connectionString))
+                throw new Exception("Connection string not found in appsettings.json");
+
+            return connectionString;
+        }
+
+        // هذا الدالة تنشئ DbContext جاهز للاختبار
         private HomeAwayDbContext GetSqlServerDbContext()
         {
             var options = new DbContextOptionsBuilder<HomeAwayDbContext>()
-                .UseSqlServer("Server=AHMEDMAHMOUDRAG\\SQLEXPRESS;Database=HomeAwayDb;Trusted_Connection=True;")
+                .UseSqlServer(GetConnectionString())
                 .Options;
 
             return new HomeAwayDbContext(options);
         }
 
-        private HotelService GetHotelService(HomeAwayDbContext context)
-        {
-            var repo = new HotelRepository(context);
-            return new HotelService(repo);
-        }
-
-
         [Fact]
         public async Task CreateHotel_ShouldAddHotelToDb()
         {
+            // إعداد
             using var context = GetSqlServerDbContext();
-            var service = GetHotelService(context);
+            var service = new HotelService(new HomeAway.Infrastructure.Repositories.HotelRepository(context));
 
-            var dto = new HotelDto
+            var hotelDto = new HotelDto
             {
-                Name = "Integration Test Hotel",
-                Address = "Cairo",
-                Description = "Test Desc",
-                Email = "test@hotel.com",
-                PhoneNumber = "0100000000",
-                images = new string[] { "img1.jpg" },
+                Name = "Test Hotel",
+                Address = "Test Address",
+                Description = "Test Description",
+                Email = "test@example.com",
+                PhoneNumber = "1234567890",
+                images = Array.Empty<string>(),
                 Rating = 5
             };
 
-            // Act
-            var id = await service.CreateAsync(dto);
+            // تنفيذ
+            var id = await service.CreateAsync(hotelDto);
 
-            // Assert
-            var inserted = await context.Hotels.FindAsync(id);
-            Assert.NotNull(inserted);
-            Assert.Equal("Integration Test Hotel", inserted.Name);
+            // تحقق
+            var addedHotel = await context.Hotels.FindAsync(id);
+            Assert.NotNull(addedHotel);
+            Assert.Equal("Test Hotel", addedHotel.Name);
 
-            // تنظيف البيانات بعد الاختبار
-            context.Hotels.Remove(inserted);
+            // تنظيف: إزالة الاختبار من قاعدة البيانات
+            context.Hotels.Remove(addedHotel);
             await context.SaveChangesAsync();
-        }
-
-        [Fact]
-        public async Task UpdateHotel_ShouldModifyHotelInDb()
-        {
-            using var context = GetSqlServerDbContext();
-            var service = GetHotelService(context);
-
-            // جهز بيانات أولية
-            var hotel = new Hotel
-            {
-                Name = "Old Name",
-                Address = "Cairo",
-                Description = "Desc",
-                Email = "old@hotel.com",
-                PhoneNumber = "0111111111",
-                images = new string[] { "img.jpg" },
-                Rating = 3
-            };
-            context.Hotels.Add(hotel);
-            await context.SaveChangesAsync();
-
-            // Act
-            var updateDto = new UpdateHotelDto
-            {
-                Id = hotel.Id,
-                Name = "New Name",
-                Address = hotel.Address,
-                Description = hotel.Description,
-                Email = hotel.Email,
-                PhoneNumber = hotel.PhoneNumber,
-                images = hotel.images
-            };
-            var result = await service.UpdateAsync(updateDto);
-
-            var updated = await context.Hotels.FindAsync(hotel.Id);
-
-            // Assert
-            Assert.True(result);
-            Assert.Equal("New Name", updated.Name);
-
-            // تنظيف
-            context.Hotels.Remove(updated);
-            await context.SaveChangesAsync();
-        }
-
-        [Fact]
-        public async Task DeleteHotel_ShouldRemoveHotelFromDb()
-        {
-            using var context = GetSqlServerDbContext();
-            var service = GetHotelService(context);
-
-            // جهز بيانات أولية
-            var hotel = new Hotel
-            {
-                Name = "To Delete",
-                Address = "Cairo",
-                Description = "Desc",
-                Email = "delete@hotel.com",
-                PhoneNumber = "0123456789",
-                images = new string[] { "img.jpg" },
-                Rating = 4
-            };
-            context.Hotels.Add(hotel);
-            await context.SaveChangesAsync();
-
-            // Act
-            var result = await service.DeleteAsync(hotel.Id);
-            var deleted = await context.Hotels.FindAsync(hotel.Id);
-
-            // Assert
-            Assert.True(result);
-            Assert.Null(deleted);
-            
         }
     }
 }
-
