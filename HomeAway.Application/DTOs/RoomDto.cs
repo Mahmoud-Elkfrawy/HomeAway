@@ -12,11 +12,11 @@ namespace HomeAway.Application.DTOs
     public class RoomDto
     {
         public int Id { get; set; }
-        //public string HotelName { get; set; }
         public int Quantity { get; set; }
         public RoomType Type { get; set; }
         public bool IsAvailable { get; set; }
         public int? HotelId { get; set; }
+        public string[]? images { get; set; } = Array.Empty<string>();
 
         public string? Number { get; set; }
         public Decimal Price { get; set; }
