@@ -67,7 +67,7 @@ namespace HomeAway.API.Controllers
 
         //[Authorize(Roles = "Admin,Provider")]
         [HttpPut]
-        public async Task<IActionResult> Update(RoomDto dto)
+        public async Task<IActionResult> Update(UpdateRoomDto dto)
         {
             try
             {

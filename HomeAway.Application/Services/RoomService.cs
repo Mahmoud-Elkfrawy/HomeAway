@@ -32,6 +32,7 @@ namespace HomeAway.Application.Services
                 Price = roomDto.Price,
                 HotelId = roomDto.HotelId,
                 Number = roomDto.Number,
+                images = roomDto.images,
 
                 //IsAvailable = roomDto.IsAvailable,
                 //HotelId = _roomRepository.GetByNameAsync(roomDto.HotelName).Result.Id
@@ -65,7 +66,7 @@ namespace HomeAway.Application.Services
                 //HotelName = room.Hotel.Name
             };
         }
-        public async Task<RoomDto> UpdateAsync(RoomDto roomDto)
+        public async Task<bool> UpdateAsync(UpdateRoomDto roomDto)
         {
             var room = await _roomRepository.GetByIdAsync(roomDto.Id);
 
@@ -79,9 +80,9 @@ namespace HomeAway.Application.Services
 
                 //room.IsAvailable = roomDto.IsAvailable;
                 await _roomRepository.UpdateAsync(room);
-                return roomDto;
+                return true;
             }
-            return null;
+            return false;
         }
         public async Task<bool> DeleteAsync(int Id)
         {

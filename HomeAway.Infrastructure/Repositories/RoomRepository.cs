@@ -58,6 +58,7 @@ namespace HomeAway.Infrastructure.Repositories
             existing.Type = entity.Type;
             existing.Quantity = entity.Quantity;
             existing.IsAvailable = entity.IsAvailable;
+            existing.images = entity.images;
 
             await _context.SaveChangesAsync();
         }
