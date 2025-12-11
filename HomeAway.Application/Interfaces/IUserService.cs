@@ -18,6 +18,7 @@ namespace HomeAway.Application.Interfaces
         Task<bool> DeleteUserAsync(String id);
         Task<List<UserDto>> GetAllUsersAsync();
         Task<bool> AssignRoleAsync(string userId, string role);
-
+        Task<GetPaymentDto> GetPyment(string userId);
+        Task<bool> SetPyment(PaymentDto payment);
     }
 }

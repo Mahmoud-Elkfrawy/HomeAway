@@ -15,7 +15,7 @@ namespace HomeAway.Application.Interfaces
         Task<List<Room>> GetAllAsync();
 
         Task<RoomDto> GetRoomByIdAsync(int id);
-        Task<RoomDto> UpdateAsync(RoomDto roomDto);
+        Task<bool> UpdateAsync(UpdateRoomDto roomDto);
         Task<bool> DeleteAsync(int Id);
     }
 }

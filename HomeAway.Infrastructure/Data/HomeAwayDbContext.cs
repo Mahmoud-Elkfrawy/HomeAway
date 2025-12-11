@@ -30,9 +30,10 @@ namespace HomeAway.Infrastructure.Data
 
             // Room-Hotel relationship
             modelBuilder.Entity<Room>()
-                .HasOne<Hotel>()                   // Room has 1 Hotel
-                .WithMany(h => h.Rooms)            // Hotel has many Rooms
-                .HasForeignKey(r => r.HotelId);    // FK on Room
+                .HasOne(r => r.Hotel)
+                .WithMany(h => h.Rooms)
+                .HasForeignKey(r => r.HotelId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Reservation relationships
             modelBuilder.Entity<Reservation>()
@@ -48,9 +49,8 @@ namespace HomeAway.Infrastructure.Data
                     dr.Property(x => x.From).HasColumnName("From");
                     dr.Property(x => x.To).HasColumnName("To");
                 });
-
-
             });
+
             modelBuilder.Entity<Reservation>()
                 .Property(r => r.TotalPrice)
                 .HasPrecision(18, 2);
@@ -59,6 +59,5 @@ namespace HomeAway.Infrastructure.Data
                 .Property(r => r.Price)
                 .HasPrecision(18, 2);
         }
-
     }
 }

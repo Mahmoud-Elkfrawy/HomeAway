@@ -10,6 +10,6 @@ namespace HomeAway.Domain.Interfaces
 {
     public interface IRoomRepository:IGenericRepository<Room>
     {
-
+        Task<List<Room>> SearchAvailableRoomsAsync(string hotelAddress, DateTime from, DateTime to, int guests);
     }
 }

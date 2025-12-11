@@ -8,10 +8,10 @@ namespace HomeAway.Domain.Enums
 {
     public enum RoomType
     {
-        Single,
-        Double,
-        Triple,
-        Quadruple,
-        Penthouse
+        Single = 1,
+        Double = 2,
+        Triple = 3,
+        Quadruple = 4,
+        Penthouse = 5
     }
 }

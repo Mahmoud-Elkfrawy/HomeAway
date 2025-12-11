@@ -107,6 +107,30 @@ namespace HomeAway.Application.Services
             }
             return users;
         }
+
+        public async Task<GetPaymentDto> GetPyment(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            return new GetPaymentDto
+            {
+                CardHolderName = user.CardHolderName,
+                CardNumber = user.CardNumber,
+                Expiry = user.Expiry,
+                CVV = user.CVV
+            };
+
+        }
+
+        public async Task<bool> SetPyment(PaymentDto payment)
+        {
+            var user = await _userManager.FindByIdAsync(payment.UserId);
+            user.CardHolderName = payment.CardHolderName;
+            user.CardNumber = payment.CardNumber;
+            user.Expiry = payment.Expiry;
+            user.CVV = payment.CVV;
+            await _userManager.UpdateAsync(user);
+            return true;
+        }
     }
 
 }

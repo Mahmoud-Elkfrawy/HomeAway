@@ -58,9 +58,28 @@ namespace HomeAway.Infrastructure.Repositories
             existing.Type = entity.Type;
             existing.Quantity = entity.Quantity;
             existing.IsAvailable = entity.IsAvailable;
+            existing.images = entity.images;
 
             await _context.SaveChangesAsync();
         }
+        public async Task<List<Room>> SearchAvailableRoomsAsync(string hotelAddress, DateTime from, DateTime to, int guests)
+        {
+            return await _context.Rooms
+                .Include(r => r.Hotel)
+                .Where(r =>
+                    r.Hotel != null &&
+                    r.Hotel.Address.Contains(hotelAddress) &&
 
+                    // capacity uses enum numeric value
+                    ((int)r.Type) >= guests &&
+
+                    !_context.Reservations.Any(res =>
+                        res.RoomId == r.Id &&
+                        res.DateRange.From < to &&
+                        res.DateRange.To > from
+                    )
+                )
+                .ToListAsync();
+        }
     }
 }
