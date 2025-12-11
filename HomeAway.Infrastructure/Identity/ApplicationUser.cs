@@ -11,7 +11,7 @@ namespace HomeAway.Infrastructure.Identity
     {
         public string FullName { get; set; }
         public string CardHolderName { get; set; } = string.Empty;
-        public int CardNumber { get; set; }
+        public string CardNumber { get; set; } = string.Empty;
         public string Expiry { get; set; } = string.Empty;
         public int CVV { get; set; }
     }

@@ -3,6 +3,7 @@ using HomeAway.Application.DTOs;
 using HomeAway.Application.Interfaces;
 using HomeAway.Infrastructure.Identity;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -62,14 +63,16 @@ namespace HomeAway.API.Controllers
         {
             try
             {
-                return Ok(_userService.GetPyment(UserID));
+                var user = await _userService.GetPyment(UserID);
+                if (user == null) return BadRequest("User not found.");
+                return Ok(user);
             }
             catch (Exception ex)
             {
                 return StatusCode(500, new { message = "Internal server error", error = ex.Message });
             }
         }
-        [HttpGet("SetPayment")]
+        [HttpPost("SetPayment")]
         public async Task<IActionResult> SetPayment(PaymentDto payment)
         {
             try
