@@ -15,7 +15,7 @@ namespace HomeAway.API.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly JwtTokenService _jwtTokenService;
         private readonly IReservationService _reservation;
-        public IUserService _userService { get; set; }
+        private readonly IUserService _userService;
         public AdminController(UserManager<ApplicationUser> userManager,
                                RoleManager<IdentityRole> roleManager,
                                JwtTokenService jwtTokenService,

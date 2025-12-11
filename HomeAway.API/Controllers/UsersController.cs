@@ -1,4 +1,6 @@
 ﻿using HomeAway.Application.Auth;
+using HomeAway.Application.DTOs;
+using HomeAway.Application.Interfaces;
 using HomeAway.Infrastructure.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -13,15 +15,17 @@ namespace HomeAway.API.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly JwtTokenService _jwtTokenService;
-
+        private readonly IUserService _userService;
 
         public UsersController(UserManager<ApplicationUser> userManager,
         RoleManager<IdentityRole> roleManager,
-        JwtTokenService jwtTokenService)
+        JwtTokenService jwtTokenService,
+        IUserService userService)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _jwtTokenService = jwtTokenService;
+            _userService = userService;
         }
 
         [HttpPost("register")]
@@ -47,6 +51,39 @@ namespace HomeAway.API.Controllers
 
                 return Ok("User created successfully.");
 
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Internal server error", error = ex.Message });
+            }
+        }
+        [HttpGet("GetPayment")]
+        public async Task<IActionResult> GetPayment(string UserID)
+        {
+            try
+            {
+                return Ok(_userService.GetPyment(UserID));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Internal server error", error = ex.Message });
+            }
+        }
+        [HttpGet("SetPayment")]
+        public async Task<IActionResult> SetPayment(PaymentDto payment)
+        {
+            try
+            {
+                var result = await _userManager.FindByIdAsync(payment.UserId);
+                if (result == null) return BadRequest("User not found.");
+                if (await _userService.SetPyment(payment))
+                {
+                    return Ok("Payment set successfully.");
+                }
+                else
+                {
+                    return BadRequest("Failed to set payment.");
+                }
             }
             catch (Exception ex)
             {
