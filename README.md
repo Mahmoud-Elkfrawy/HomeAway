@@ -184,16 +184,6 @@ components:
 
 Paste this into your Swagger/OpenAPI editor or extend your existing `swagger.json` to document endpoints more completely.
 
-## Which license should you use?
-
-Recommended options:
-- MIT — permissive, simple, widely used. Good if you want others to freely use and modify the project with attribution.
-- Apache-2.0 — permissive and includes patent grant. Use if you want stronger legal protection.
-- GPL-3.0 — copyleft; requires derivative works to be open-source under the same license.
-
-Recommendation: use `MIT` for most open-source web API projects unless you need Apache's patent protection or prefer GPL's copyleft requirements.
-
-
 ## Key features
 
 - Hotel, room and reservation management
