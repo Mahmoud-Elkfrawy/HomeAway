@@ -60,6 +60,140 @@ Below are common endpoints and example `curl` requests. Replace `https://localho
 Add or adapt these examples to match your DTO shapes if they differ.
 
 
+## Responses & HTTP status codes
+
+The table below shows typical responses and status codes for common operations.
+
+- Register (POST `/api/auth/register`)
+  - 200 OK: "User Registered Successfully"
+  - 400 Bad Request: validation errors (e.g., username taken)
+  - 500 Internal Server Error: { "message": "Internal server error", "error": "..." }
+
+- Login (POST `/api/auth/login`)
+  - 200 OK: { "token": "<JWT_TOKEN>" }
+  - 401 Unauthorized: "Invalid username or password"
+  - 500 Internal Server Error
+
+- Get all hotels (GET `/api/hotels`)
+  - 200 OK: [ { "id":1, "name":"Ocean View", "city":"Cairo", ... }, ... ]
+  - 500 Internal Server Error
+
+- Get hotel by id (GET `/api/hotels/{id}`)
+  - 200 OK: { "id":1, "name":"Ocean View", ... }
+  - 404 Not Found: when id does not exist
+
+- Create hotel (POST `/api/hotels`)
+  - 201 Created: Location header points to `/api/hotels/{id}` and body contains { "id": {id} }
+  - 400 Bad Request: validation errors
+  - 401/403: when the caller is not authenticated or authorized
+
+- Create room (POST `/api/rooms`)
+  - 201 Created: Location header points to `/api/rooms/{id}`
+  - 400 Bad Request
+  - 401/403 Unauthorized or forbidden
+
+- Book reservation (POST `/api/reservations`)
+  - 201 Created: reservation created
+  - 400 Bad Request: invalid dates or unavailable room
+  - 500 Internal Server Error
+
+Example successful response for `GET /api/hotels/1`:
+
+```
+{
+  "id": 1,
+  "name": "Ocean View",
+  "address": "123 Beach Ave",
+  "city": "Cairo",
+  "country": "Egypt",
+  "rooms": [
+    { "id": 1, "type": 0, "pricePerNight": 99.99, "capacity": 2 }
+  ]
+}
+```
+
+Example error response:
+
+```
+{ "message": "Internal server error", "error": "Detailed error message" }
+```
+
+## Postman collection
+
+A minimal Postman collection is included at `postman/HomeAway.postman_collection.json`. Import it into Postman and set the `baseUrl` variable to your API base URL. The collection contains example requests for register, login and get hotels.
+
+## OpenAPI / Swagger snippet
+
+Minimal OpenAPI paths you can add to an existing `openapi.json` or use as a starting point with Swagger UI:
+
+```yaml
+openapi: 3.0.1
+info:
+  title: HomeAway API
+  version: 1.0.0
+servers:
+  - url: https://localhost:5001
+paths:
+  /api/auth/register:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200': { description: OK }
+        '400': { description: Bad Request }
+  /api/auth/login:
+    post:
+      summary: Login and obtain JWT
+      requestBody:
+        required: true
+        content:
+          application/json: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+  /api/hotels:
+    get:
+      summary: Get all hotels
+      responses:
+        '200': { description: OK }
+    post:
+      summary: Create hotel
+      security:
+        - bearerAuth: []
+      responses:
+        '201': { description: Created }
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+```
+
+Paste this into your Swagger/OpenAPI editor or extend your existing `swagger.json` to document endpoints more completely.
+
+## Which license should you use?
+
+Recommended options:
+- MIT — permissive, simple, widely used. Good if you want others to freely use and modify the project with attribution.
+- Apache-2.0 — permissive and includes patent grant. Use if you want stronger legal protection.
+- GPL-3.0 — copyleft; requires derivative works to be open-source under the same license.
+
+Recommendation: use `MIT` for most open-source web API projects unless you need Apache's patent protection or prefer GPL's copyleft requirements.
+
+
 ## Key features
 
 - Hotel, room and reservation management
@@ -122,7 +256,7 @@ Database schema is managed via EF Core migrations located in `HomeAway.Infrastru
 
 ## License
 
-Specify the project license here (e.g., MIT) or replace this section with your chosen license.
+MIT
 
 ## Contacts
 
